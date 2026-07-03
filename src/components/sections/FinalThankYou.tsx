@@ -7,7 +7,7 @@ import { Clouds } from '../decorations/Clouds'
 import { RunwayLights } from '../decorations/RunwayLights'
 import { Reveal } from '../ui/Reveal'
 
-const GOLD_COLORS = ['#c6a15b', '#e4c987', '#fffdf7', '#a9c7de']
+const GOLD_COLORS = ['#c68a74', '#e9c5b5', '#fffefd', '#dba8a3']
 
 export function FinalThankYou({ config }: { config: WeddingConfig }) {
   const { thankYou, couple, date, event } = config

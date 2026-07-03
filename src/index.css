@@ -1,33 +1,34 @@
 @import 'tailwindcss';
 
 /*
-  Romantic Luxury Aviation Wedding Invitation — design tokens.
-  Palette: ivory / warm cream, deep navy, champagne gold, soft beige, rose gold.
+  Modern Romantic Wedding Invitation — design tokens.
+  Palette: soft blush neutrals, deep bordeaux-plum, rose gold + champagne.
+  (Retired the yellow-beige + brass-navy scheme that read muddy.)
 */
 @theme {
-  /* Warm neutrals */
-  --color-ivory: #f7f1e6;
-  --color-ivory-deep: #efe4d1;
-  --color-cream: #fbf6ec;
-  --color-warm-white: #fffdf8;
-  --color-beige: #e9dcc4;
+  /* Soft blush neutrals — clean, no yellow cast */
+  --color-ivory: #f8f2f0;
+  --color-ivory-deep: #efe0db;
+  --color-cream: #fdf9f7;
+  --color-warm-white: #fffefd;
+  --color-beige: #ecdbd5;
 
-  /* Navy (used sparingly, softened with gold) */
-  --color-navy: #12233f;
-  --color-navy-700: #1b3155;
-  --color-navy-600: #274069;
-  --color-navy-400: #55709a;
+  /* Deep bordeaux-plum (the romantic "dark", replaces navy) */
+  --color-navy: #47233b;
+  --color-navy-700: #5c2f4d;
+  --color-navy-600: #743e60;
+  --color-navy-400: #a06f8a;
 
-  /* Champagne gold + rose gold */
-  --color-gold: #c6a15b;
-  --color-gold-light: #e6cf95;
-  --color-gold-dark: #9c7a34;
-  --color-rose: #c9a29a;
-  --color-rosegold: #c69a86;
+  /* Rose gold + champagne accents */
+  --color-gold: #c68a74;
+  --color-gold-light: #e9c5b5;
+  --color-gold-dark: #a25c46;
+  --color-rose: #dba8a3;
+  --color-rosegold: #c68a74;
 
-  /* Soft sky (very light accents only) */
-  --color-sky: #a9c7de;
-  --color-sky-soft: #dce9f2;
+  /* Soft blush-mauve (very light accents only) */
+  --color-sky: #ccadc1;
+  --color-sky-soft: #f0dfe9;
 
   /* Fonts */
   --font-display: 'Cormorant Garamond', 'Playfair Display', 'Times New Roman',
@@ -119,8 +120,8 @@
     background-color: var(--color-ivory);
     /* Soft romantic radial glow */
     background-image:
-      radial-gradient(120% 75% at 50% -8%, #fdf9f1 0%, transparent 55%),
-      radial-gradient(110% 60% at 50% 108%, #efe3cd 0%, transparent 60%);
+      radial-gradient(120% 75% at 50% -8%, #fdf4f1 0%, transparent 55%),
+      radial-gradient(110% 60% at 50% 108%, #efd9d4 0%, transparent 60%);
     background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -188,13 +189,13 @@
 
   .btn-primary {
     color: var(--color-warm-white);
-    background: linear-gradient(135deg, #1b3155 0%, #12233f 100%);
+    background: linear-gradient(135deg, #5c2f4d 0%, #47233b 100%);
     border: 1px solid color-mix(in srgb, var(--color-gold) 45%, transparent);
-    box-shadow: 0 10px 24px -12px rgba(18, 35, 63, 0.55);
+    box-shadow: 0 10px 24px -12px rgba(71, 35, 59, 0.55);
   }
   .btn-primary:not(:disabled):hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 30px -12px rgba(18, 35, 63, 0.6);
+    box-shadow: 0 16px 30px -12px rgba(71, 35, 59, 0.6);
   }
   .btn-primary:not(:disabled):hover svg {
     transform: translateX(2px);
@@ -204,24 +205,24 @@
     color: var(--color-navy);
     background: var(--color-warm-white);
     border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
-    box-shadow: 0 8px 20px -14px rgba(156, 122, 52, 0.55);
+    box-shadow: 0 8px 20px -14px rgba(162, 92, 70, 0.55);
   }
   .btn-ghost:not(:disabled):hover {
     transform: translateY(-2px);
     color: var(--color-gold-dark);
     border-color: var(--color-gold);
-    box-shadow: 0 14px 26px -14px rgba(156, 122, 52, 0.6);
+    box-shadow: 0 14px 26px -14px rgba(162, 92, 70, 0.6);
   }
 
   .btn-gold {
     color: var(--color-navy);
     background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
     border: 1px solid color-mix(in srgb, var(--color-gold-dark) 40%, transparent);
-    box-shadow: 0 10px 24px -12px rgba(156, 122, 52, 0.6);
+    box-shadow: 0 10px 24px -12px rgba(162, 92, 70, 0.6);
   }
   .btn-gold:not(:disabled):hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 30px -12px rgba(156, 122, 52, 0.7);
+    box-shadow: 0 16px 30px -12px rgba(162, 92, 70, 0.7);
   }
 }
 

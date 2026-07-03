@@ -13,7 +13,7 @@ export function PassportStamp({ top, date, bottom, className }: PassportStampPro
   return (
     <div
       className={cn(
-        'grid h-28 w-28 -rotate-12 place-items-center rounded-full border-2 border-gold/70 text-gold shadow-[inset_0_0_0_4px_rgba(198,161,91,0.12)]',
+        'grid h-28 w-28 -rotate-12 place-items-center rounded-full border-2 border-gold/70 text-gold shadow-[inset_0_0_0_4px_rgba(198,138,116,0.12)]',
         className,
       )}
       aria-hidden="true"

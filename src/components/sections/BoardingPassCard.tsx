@@ -63,7 +63,7 @@ const QR_MATRIX = buildQrMatrix()
 function QrCode() {
   return (
     <div
-      className="grid h-[4.8em] w-[4.8em] rounded-[0.2em] bg-white p-[0.18em] shadow-[0_0_0_1px_rgba(18,35,63,0.08)]"
+      className="grid h-[4.8em] w-[4.8em] rounded-[0.2em] bg-white p-[0.18em] shadow-[0_0_0_1px_rgba(71,35,59,0.08)]"
       style={{ gridTemplateColumns: `repeat(${QR_SIZE}, 1fr)` }}
       aria-hidden="true"
     >
@@ -119,12 +119,12 @@ export const BoardingPassCard = forwardRef<HTMLDivElement, BoardingPassCardProps
         style={fontPx ? { fontSize: `${fontPx}px` } : undefined}
         className={cn(
           'relative isolate w-full overflow-hidden rounded-[1.5em] border border-gold/40 bg-cream font-sans text-navy',
-          'text-[3cqw] shadow-[0_30px_60px_-30px_rgba(18,35,63,0.45),0_2px_6px_rgba(18,35,63,0.06)]',
+          'text-[3cqw] shadow-[0_30px_60px_-30px_rgba(71,35,59,0.45),0_2px_6px_rgba(71,35,59,0.06)]',
           className,
         )}
       >
         {/* warm radial + grain */}
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_-10%,#fefaf2_0%,transparent_60%)]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_-10%,#fef7f4_0%,transparent_60%)]" />
         <div className="paper-grain pointer-events-none absolute inset-0 -z-10 opacity-[0.05] mix-blend-multiply" />
 
         {/* Header */}

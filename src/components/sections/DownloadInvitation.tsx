@@ -135,7 +135,7 @@ export function DownloadInvitation({
           style={{
             width: EXPORT_WIDTH,
             padding: EXPORT_PADDING,
-            background: '#f7f1e6',
+            background: '#f8f2f0',
           }}
         >
           <BoardingPassCard

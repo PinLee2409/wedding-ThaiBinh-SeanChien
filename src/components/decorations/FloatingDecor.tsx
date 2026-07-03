@@ -56,7 +56,7 @@ export function FloatingDecor() {
       aria-hidden="true"
     >
       {/* Soft vignette */}
-      <div className="absolute inset-0 shadow-[inset_0_0_180px_50px_rgba(18,35,63,0.10)]" />
+      <div className="absolute inset-0 shadow-[inset_0_0_180px_50px_rgba(71,35,59,0.10)]" />
 
       {/* Paper grain */}
       <div className="paper-grain absolute inset-0 opacity-[0.05] mix-blend-multiply" />

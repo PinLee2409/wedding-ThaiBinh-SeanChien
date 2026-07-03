@@ -65,7 +65,7 @@ export function MediaGallery({ config }: { config: WeddingConfig }) {
                 src={image.src}
                 alt={image.alt}
                 label={`Ảnh ${i + 1}`}
-                className="h-full w-full rounded-2xl border border-gold/15 shadow-sm transition-shadow duration-500 group-hover:shadow-[0_18px_36px_-20px_rgba(18,35,63,0.5)]"
+                className="h-full w-full rounded-2xl border border-gold/15 shadow-sm transition-shadow duration-500 group-hover:shadow-[0_18px_36px_-20px_rgba(71,35,59,0.5)]"
                 imgClassName="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
               />
             </RevealItem>

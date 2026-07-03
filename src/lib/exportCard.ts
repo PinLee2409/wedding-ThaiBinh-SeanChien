@@ -1,7 +1,7 @@
 /** Client-side export of a DOM node (the boarding pass) → high-res PNG / PDF.
  *  html-to-image + jsPDF are dynamically imported so they only load on demand. */
 
-const EXPORT_BG = '#f7f1e6' // ivory
+const EXPORT_BG = '#f8f2f0' // ivory (soft blush)
 const PIXEL_RATIO = 2
 
 /**

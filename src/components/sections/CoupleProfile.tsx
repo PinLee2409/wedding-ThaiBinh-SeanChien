@@ -9,7 +9,7 @@ function ProfileCard({ person, side }: { person: Person; side: string }) {
       className={cn(
         'group relative flex h-full flex-col items-center rounded-3xl border border-gold/20 bg-warm-white/70 text-center',
         'p-[clamp(0.75rem,3.5vw,2rem)] shadow-sm backdrop-blur-sm transition duration-500',
-        'hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_22px_44px_-26px_rgba(198,161,91,0.65)]',
+        'hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_22px_44px_-26px_rgba(198,138,116,0.65)]',
       )}
     >
       {/* Avatar with soft gold glow on hover */}

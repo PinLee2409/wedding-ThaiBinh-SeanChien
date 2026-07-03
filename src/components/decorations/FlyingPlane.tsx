@@ -36,7 +36,7 @@ export function FlyingPlane({ className }: { className?: string }) {
     >
       <span className="h-px w-28 bg-gradient-to-l from-gold/70 to-transparent" />
       <Plane
-        className="h-7 w-7 rotate-45 text-navy drop-shadow-[0_2px_4px_rgba(14,28,56,0.25)]"
+        className="h-7 w-7 rotate-45 text-navy drop-shadow-[0_2px_4px_rgba(45,20,35,0.25)]"
         strokeWidth={1.5}
       />
     </motion.div>

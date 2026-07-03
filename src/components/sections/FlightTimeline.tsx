@@ -27,7 +27,7 @@ function TimelineRow({ item, index }: { item: TimelineItem; index: number }) {
     >
       {/* Node on the line */}
       <span
-        className="group absolute left-6 top-0 z-10 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full border-2 border-gold bg-warm-white text-gold shadow-[0_8px_20px_-10px_rgba(198,161,91,0.7)] md:left-1/2"
+        className="group absolute left-6 top-0 z-10 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full border-2 border-gold bg-warm-white text-gold shadow-[0_8px_20px_-10px_rgba(198,138,116,0.7)] md:left-1/2"
         aria-hidden="true"
       >
         <Icon className="h-5 w-5" strokeWidth={1.5} />
