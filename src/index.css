@@ -112,6 +112,9 @@
     color: var(--color-navy);
     font-family: var(--font-sans);
     font-size: 16px;
+    /* Medium weight reads noticeably crisper than the default 400 without
+       looking heavy — the base body copy felt too thin before. */
+    font-weight: 500;
     line-height: 1.6;
     background-color: var(--color-ivory);
     /* Soft romantic radial glow */
@@ -134,7 +137,9 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 500;
+    /* The Cormorant serif is elegant but delicate; 600 keeps it graceful while
+       giving the headings more presence. */
+    font-weight: 600;
     letter-spacing: 0.01em;
   }
 

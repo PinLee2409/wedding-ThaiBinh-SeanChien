@@ -124,21 +124,23 @@ export function HeroSection({
         {/* Personalised greeting */}
         <motion.div
           variants={fadeUp}
-          className="mt-1 rounded-2xl border border-warm-white/20 bg-white/10 px-5 py-3 backdrop-blur-sm"
+          className="mt-1 flex flex-col items-center rounded-2xl border border-gold/30 bg-white/10 px-6 py-4 backdrop-blur-sm"
         >
-          <p className="text-sm text-warm-white/90 sm:text-base">
-            {guestName ? (
-              <>
-                Kính mời:{' '}
-                <span className="font-display text-lg text-gold sm:text-xl">
-                  {guestName}
-                </span>
-              </>
-            ) : (
-              'Trân trọng kính mời'
-            )}
-          </p>
-          <p className="mt-1 text-xs text-sky-soft sm:text-sm">
+          {guestName ? (
+            <>
+              <span className="label-caps text-[11px] text-sky-soft">
+                Kính mời
+              </span>
+              <span className="mt-1.5 font-display text-2xl font-semibold text-gold-shimmer sm:text-3xl">
+                {guestName}
+              </span>
+            </>
+          ) : (
+            <span className="font-display text-xl font-semibold text-gold sm:text-2xl">
+              Trân trọng kính mời
+            </span>
+          )}
+          <p className="mt-2 text-xs text-sky-soft sm:text-sm">
             Cùng lên chuyến bay hạnh phúc của chúng mình.
           </p>
         </motion.div>

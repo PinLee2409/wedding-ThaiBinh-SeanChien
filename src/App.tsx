@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { weddingConfig } from './config/wedding.config'
 import { useGuestName } from './hooks/useGuestName'
@@ -28,6 +28,17 @@ function App() {
   // dismissed this session.
   const [gateDismissed, setGateDismissed] = useState(false)
   const gateOpen = !hasGuest && !gateDismissed
+
+  // Always open at the top. Browsers default to `scrollRestoration: 'auto'`,
+  // which restores the previous scroll offset on reload / back-forward — that
+  // is what made the page land mid-way instead of on the hero. Switch it off
+  // and force the top on first mount.
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <motion.div

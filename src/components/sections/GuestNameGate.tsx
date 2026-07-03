@@ -21,7 +21,12 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
     if (!open) return
     const original = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 260)
+    // `preventScroll` stops mobile browsers from scrolling the page to keep the
+    // caret in view (the modal is centred, so that would jump the page down).
+    const focusTimer = window.setTimeout(
+      () => inputRef.current?.focus({ preventScroll: true }),
+      260,
+    )
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onSkip()
