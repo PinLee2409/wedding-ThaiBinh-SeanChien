@@ -4,6 +4,7 @@ import type { WeddingConfig } from '../../config/wedding.config'
 import { fadeUp, staggerContainer } from '../../lib/motion'
 import { Clouds } from '../decorations/Clouds'
 import { FlyingPlane } from '../decorations/FlyingPlane'
+import { FloatingHearts } from '../decorations/FloatingHearts'
 import { RunwayLights } from '../decorations/RunwayLights'
 import { Countdown } from '../ui/Countdown'
 import { MusicToggle } from '../ui/MusicToggle'
@@ -53,13 +54,43 @@ export function HeroSection({
             className="h-full w-full"
           />
         )}
-        {/* Bright elegant sky gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#E8F4FD]/90 via-[#FDFCFA]/75 to-[#F0E8D8]/85" />
+        {/* Bright elegant sky gradient — follows the active colour theme. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-sky-soft/90 via-ivory/70 to-beige/80" />
       </div>
 
-      {/* Ambient sky */}
+      {/* Ambient sky: clouds, a squadron of planes and a field of hearts. */}
       <Clouds className="opacity-40" />
-      <FlyingPlane />
+      <FloatingHearts className="z-[5]" />
+      <FlyingPlane top="16%" size={28} duration={17} tone="text-navy" />
+      <FlyingPlane
+        top="30%"
+        size={20}
+        duration={22}
+        delay={-6}
+        repeatDelay={3}
+        direction="rtl"
+        tone="text-gold-dark"
+        trailWidth="w-20"
+      />
+      <FlyingPlane
+        top="52%"
+        size={16}
+        duration={26}
+        delay={-12}
+        repeatDelay={4}
+        tone="text-navy-500"
+        trailWidth="w-16"
+      />
+      <FlyingPlane
+        top="68%"
+        size={22}
+        duration={20}
+        delay={-3}
+        repeatDelay={6}
+        direction="rtl"
+        tone="text-rosegold"
+        trailWidth="w-24"
+      />
 
       {/* "Airplane window" frame */}
       <div className="pointer-events-none absolute inset-3 rounded-[2rem] border border-navy/10 sm:inset-5" />
@@ -103,15 +134,15 @@ export function HeroSection({
           className="text-display font-display font-semibold uppercase tracking-wide text-navy"
         >
           Flight to{' '}
-          <span className="block text-gold-dark">Forever</span>
+          <span className="text-gold-shimmer block">Forever</span>
         </motion.h1>
 
         <motion.div
           variants={fadeUp}
-          className="flex items-center justify-center gap-4 font-display text-[clamp(1.5rem,6vw,2.5rem)] text-navy"
+          className="flex items-center justify-center gap-4 font-script text-[clamp(2.1rem,7.5vw,3.4rem)] leading-snug text-navy"
         >
           <span>{couple.groom.name}</span>
-          <Plane className="h-5 w-5 rotate-45 text-gold-dark" strokeWidth={1.5} />
+          <Plane className="h-5 w-5 shrink-0 rotate-45 text-gold-dark" strokeWidth={1.5} />
           <span>{couple.bride.name}</span>
         </motion.div>
 
@@ -131,7 +162,7 @@ export function HeroSection({
               <span className="label-caps text-[11px] text-navy-400">
                 Kính mời
               </span>
-              <span className="mt-1.5 font-display text-2xl font-semibold text-gold-dark sm:text-3xl">
+              <span className="mt-1.5 font-script text-3xl leading-snug text-gold-dark sm:text-4xl">
                 {guestName}
               </span>
             </>

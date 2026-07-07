@@ -4,6 +4,8 @@ import confetti from 'canvas-confetti'
 import { Plane } from 'lucide-react'
 import type { WeddingConfig } from '../../config/wedding.config'
 import { Clouds } from '../decorations/Clouds'
+import { FlyingPlane } from '../decorations/FlyingPlane'
+import { FloatingHearts } from '../decorations/FloatingHearts'
 import { RunwayLights } from '../decorations/RunwayLights'
 import { Reveal } from '../ui/Reveal'
 
@@ -40,6 +42,29 @@ export function FinalThankYou({ config }: { config: WeddingConfig }) {
     >
       <Clouds tone="sky" className="opacity-20" />
 
+      {/* A farewell squadron crossing the night sky, rising hearts below. */}
+      <FloatingHearts className="z-[1] opacity-70" />
+      <FlyingPlane top="13%" size={24} duration={20} tone="text-gold" trailWidth="w-24" />
+      <FlyingPlane
+        top="24%"
+        size={16}
+        duration={27}
+        delay={-9}
+        repeatDelay={4}
+        direction="rtl"
+        tone="text-sky-soft"
+        trailWidth="w-16"
+      />
+      <FlyingPlane
+        top="82%"
+        size={20}
+        duration={23}
+        delay={-4}
+        repeatDelay={5}
+        tone="text-rosegold"
+        trailWidth="w-20"
+      />
+
       <Reveal className="relative z-10 flex flex-col items-center gap-5">
         <span className="grid h-16 w-16 place-items-center rounded-full border border-gold/40 text-gold">
           <Plane className="h-7 w-7 rotate-45" strokeWidth={1.4} />
@@ -55,9 +80,9 @@ export function FinalThankYou({ config }: { config: WeddingConfig }) {
           {thankYou.message}
         </p>
 
-        <div className="mt-2 flex items-center gap-3 font-display text-3xl">
+        <div className="mt-2 flex items-center gap-4 font-script text-4xl leading-snug sm:text-5xl">
           <span>{couple.groom.name}</span>
-          <span className="text-gold">&amp;</span>
+          <span className="font-display text-3xl text-gold">&amp;</span>
           <span>{couple.bride.name}</span>
         </div>
 

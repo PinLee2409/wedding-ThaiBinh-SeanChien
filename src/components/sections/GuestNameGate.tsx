@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { motion } from 'motion/react'
 import { Plane, Ticket } from 'lucide-react'
+import { cn } from '../../lib/cn'
 
 interface GuestNameGateProps {
   open: boolean
@@ -21,7 +22,11 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
     if (!open) return
     const original = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 400)
+    // preventScroll: focusing must never scroll the page behind the overlay.
+    const focusTimer = window.setTimeout(
+      () => inputRef.current?.focus({ preventScroll: true }),
+      400,
+    )
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onSkip()
@@ -42,18 +47,20 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
   }
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-5"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="gate-title"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+    // Stays mounted; open/close is a CSS fade + `inert`. (AnimatePresence
+    // unmounting proved unreliable here — an exited-but-not-removed overlay
+    // silently swallows every click on the page.)
+    <div
+      className={cn(
+        'fixed inset-0 z-50 flex items-center justify-center p-5 transition-[opacity,visibility] duration-500 ease-out',
+        open ? 'opacity-100' : 'invisible opacity-0',
+      )}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="gate-title"
+      aria-hidden={!open}
+      inert={open ? undefined : true}
+    >
           {/* Dark elegant backdrop with blur */}
           <motion.div
             className="absolute inset-0 bg-navy/75 backdrop-blur-md"
@@ -64,34 +71,17 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
             transition={{ duration: 0.6 }}
           />
 
-          {/* Floating ambient sparkles behind the card */}
-          <motion.div
-            className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-gold/40"
-            animate={{
-              y: [0, -30, 0],
-              x: [0, 15, 0],
-              opacity: [0.2, 0.8, 0.2],
-              scale: [0.8, 1.2, 0.8],
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          {/* Floating ambient sparkles behind the card. CSS-animated on
+              purpose: infinite Motion loops inside an AnimatePresence subtree
+              block exit completion, so the dialog would never unmount. */}
+          <span className="animate-twinkle absolute left-1/4 top-1/4 h-2 w-2 rounded-full bg-gold/40" />
+          <span
+            className="animate-twinkle absolute right-1/4 top-1/3 h-1.5 w-1.5 rounded-full bg-gold-light/50"
+            style={{ animationDelay: '0.8s', animationDuration: '3.5s' }}
           />
-          <motion.div
-            className="absolute top-1/3 right-1/4 h-1.5 w-1.5 rounded-full bg-gold-light/50"
-            animate={{
-              y: [0, -20, 0],
-              x: [0, -10, 0],
-              opacity: [0.3, 0.9, 0.3],
-              scale: [0.6, 1.3, 0.6],
-            }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-          />
-          <motion.div
-            className="absolute bottom-1/3 left-1/3 h-1 w-1 rounded-full bg-gold/30"
-            animate={{
-              y: [0, -25, 0],
-              opacity: [0.1, 0.7, 0.1],
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+          <span
+            className="animate-twinkle absolute bottom-1/3 left-1/3 h-1 w-1 rounded-full bg-gold/30"
+            style={{ animationDelay: '1.5s', animationDuration: '5s' }}
           />
 
           {/* Card */}
@@ -101,7 +91,6 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
             style={{ boxShadow: '0 25px 60px -15px rgba(27, 42, 74, 0.4), 0 0 40px rgba(200, 164, 92, 0.1)' }}
             initial={{ opacity: 0, y: 40, scale: 0.92, rotateX: 8 }}
             animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-            exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
           >
             {/* Ticket header strip with subtle gradient */}
@@ -114,12 +103,9 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
               <span className="label-caps text-[10px] text-navy-400 font-medium">
                 Boarding Pass
               </span>
-              <motion.div
-                animate={{ rotate: [0, 10, -5, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              >
+              <span className="animate-float inline-flex" style={{ animationDuration: '3s' }}>
                 <Plane className="h-4 w-4 rotate-45 text-gold" strokeWidth={1.5} />
-              </motion.div>
+              </span>
             </motion.div>
 
             <div className="flex flex-col items-center gap-4 px-6 py-8 text-center">
@@ -131,12 +117,9 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
                 transition={{ duration: 0.5, delay: 0.4, type: 'spring', stiffness: 200 }}
                 style={{ boxShadow: '0 0 20px rgba(200, 164, 92, 0.15)' }}
               >
-                <motion.div
-                  animate={{ rotate: [0, 5, -5, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                >
+                <span className="animate-float inline-flex" style={{ animationDuration: '4s' }}>
                   <Ticket className="h-7 w-7" strokeWidth={1.4} />
-                </motion.div>
+                </span>
               </motion.span>
 
               <motion.div
@@ -201,8 +184,6 @@ export function GuestNameGate({ open, onSubmit, onSkip }: GuestNameGateProps) {
               </motion.div>
             </div>
           </motion.form>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </div>
   )
 }
