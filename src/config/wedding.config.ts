@@ -147,15 +147,15 @@ export const weddingConfig: WeddingConfig = {
 
   couple: {
     bride: {
-      name: 'Thảo Nhi',
-      fullName: 'Nguyễn Thảo Nhi',
+      name: 'Thái Bình',
+      fullName: 'Lê Thị Thái Bình',
       role: 'Cô dâu',
-      parents: 'Con ông Nguyễn Văn A & bà Trần Thị B',
+      parents: 'Con ông Lê Anh Dũng & bà Nguyễn Thị Anh · Thái Bình',
       photo: 'images/web/anh_nu.jpg',
     },
     groom: {
-      name: 'Minh Khôi',
-      fullName: 'Lê Minh Khôi',
+      name: 'xxx',
+      fullName: 'xxxx',
       role: 'Chú rể · Cơ trưởng',
       parents: 'Con ông Lê Văn C & bà Phạm Thị D',
       photo: 'images/web/anh_nam.jpg',
@@ -233,7 +233,7 @@ export const weddingConfig: WeddingConfig = {
       {
         src: 'images/web/anh_cuoi_2.jpg',
         alt: 'Ảnh cưới 2',
-        focus: 'object-[50%_20%] scale-[1.35] origin-[50%_15%]',
+        focus: 'object-[50%_20%] translate-x-[3%] scale-[1.35] origin-[50%_15%]',
       },
       { src: 'images/web/anh_cuoi_3.jpg', alt: 'Ảnh cưới 3' },
       { src: 'images/web/anh_cuoi_4.jpg', alt: 'Ảnh cưới 4' },

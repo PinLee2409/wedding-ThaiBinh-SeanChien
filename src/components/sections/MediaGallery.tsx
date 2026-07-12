@@ -1,5 +1,6 @@
-import { Fragment, useState } from 'react'
-import { Heart, Plane, Play } from 'lucide-react'
+import { Fragment, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import { Heart, Plane, Play, X, ZoomIn, ZoomOut } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import type { WeddingConfig } from '../../config/wedding.config'
 import type { GalleryImage } from '../../config/wedding.config'
@@ -31,6 +32,21 @@ interface FrameDef {
   tilt?: string
 }
 
+interface GalleryLightboxImage {
+  src: string
+  alt: string
+  label: string
+}
+
+type WallCell =
+  | { panel: true }
+  | {
+      panel: false
+      frame: FrameDef
+      image: GalleryImage | undefined
+      index: number
+    }
+
 /**
  * Every optimized thumbnail in src/assets/marquee — Vite turns the folder
  * into a list of URLs at build time, so adding/removing files there is all
@@ -61,6 +77,37 @@ const LANDSCAPE = {
   mobile: 'max-md:order-last max-md:col-span-2',
 }
 
+function PhotoButton({
+  label,
+  onOpen,
+  disabled,
+  className,
+  children,
+}: {
+  label: string
+  onOpen?: () => void
+  disabled?: boolean
+  className?: string
+  children: ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={disabled ? undefined : onOpen}
+      className={cn(
+        'group block cursor-zoom-in appearance-none border-0 bg-transparent p-0 text-inherit',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-ivory',
+        'disabled:cursor-default',
+        className,
+      )}
+    >
+      {children}
+    </button>
+  )
+}
+
 /**
  * Exhibition wall: three balanced rows. Widths are shared proportionally to
  * each photo's aspect ratio, so every frame in a row renders the same height
@@ -85,12 +132,32 @@ const WALL_ROWS: (FrameDef | 'panel')[][] = [
   ],
 ]
 
+function buildWallRows(images: GalleryImage[]): WallCell[][] {
+  let wallIdx = 0
+
+  return WALL_ROWS.map((row) =>
+    row.map((item) => {
+      if (item === 'panel') return { panel: true as const }
+
+      const cell: WallCell = {
+        panel: false,
+        frame: item,
+        image: images[wallIdx],
+        index: wallIdx,
+      }
+      wallIdx += 1
+      return cell
+    }),
+  )
+}
+
 function GalleryFrame({
   frame,
   index,
   src,
   alt,
   focus,
+  onOpen,
 }: {
   frame: FrameDef
   index: number
@@ -98,9 +165,12 @@ function GalleryFrame({
   alt: string
   /** object-position class when the photo and frame aspects differ. */
   focus?: string
+  onOpen?: () => void
 }) {
   const { t } = useI18n()
   const label = `${t.gallery.photo} ${index + 1}`
+  const viewLabel = `${t.ui.viewPhoto}: ${alt || label}`
+  const canOpen = Boolean(src && onOpen)
   // A photo with its own zoom keeps it — the hover zoom would undo it.
   const hasZoom = focus?.includes('scale-')
   const imgClass = cn(
@@ -118,13 +188,15 @@ function GalleryFrame({
           frame.tilt,
         )}
       >
-        <SmartImage
-          src={src}
-          alt={alt}
-          label={label}
-          className={cn('w-full rounded-sm', frame.aspect)}
-          imgClassName={imgClass}
-        />
+        <PhotoButton label={viewLabel} onOpen={onOpen} disabled={!canOpen} className="w-full">
+          <SmartImage
+            src={src}
+            alt={alt}
+            label={label}
+            className={cn('w-full rounded-sm', frame.aspect)}
+            imgClassName={imgClass}
+          />
+        </PhotoButton>
         <figcaption className="shrink-0 pt-2 text-center font-script text-xl leading-none text-navy-600">
           {t.gallery.captions[frame.captionIdx ?? 0]}
         </figcaption>
@@ -143,32 +215,36 @@ function GalleryFrame({
         )}
       >
         <div className="rounded-sm border border-dashed border-gold/50 p-1.5">
-          <SmartImage
-            src={src}
-            alt={alt}
-            label={label}
-            className={cn('w-full rounded-sm', frame.aspect)}
-            imgClassName={imgClass}
-          />
+          <PhotoButton label={viewLabel} onOpen={onOpen} disabled={!canOpen} className="w-full">
+            <SmartImage
+              src={src}
+              alt={alt}
+              label={label}
+              className={cn('w-full rounded-sm', frame.aspect)}
+              imgClassName={imgClass}
+            />
+          </PhotoButton>
         </div>
       </figure>
     )
   }
 
   return (
-    <SmartImage
-      src={src}
-      alt={alt}
-      label={label}
-      className={cn(
-        'w-full border border-gold/15 shadow-sm transition-shadow duration-500 group-hover:shadow-[0_18px_36px_-20px_rgba(71,35,59,0.5)]',
-        frame.aspect,
-        frame.kind === 'arch' && 'rounded-t-[999px] rounded-b-3xl',
-        frame.kind === 'oval' && 'rounded-[50%]',
-        frame.kind === 'wide' && 'rounded-3xl',
-      )}
-      imgClassName={imgClass}
-    />
+    <PhotoButton label={viewLabel} onOpen={onOpen} disabled={!canOpen} className="w-full">
+      <SmartImage
+        src={src}
+        alt={alt}
+        label={label}
+        className={cn(
+          'w-full border border-gold/15 shadow-sm transition-shadow duration-500 group-hover:shadow-[0_18px_36px_-20px_rgba(71,35,59,0.5)]',
+          frame.aspect,
+          frame.kind === 'arch' && 'rounded-t-[999px] rounded-b-3xl',
+          frame.kind === 'oval' && 'rounded-[50%]',
+          frame.kind === 'wide' && 'rounded-3xl',
+        )}
+        imgClassName={imgClass}
+      />
+    </PhotoButton>
   )
 }
 
@@ -201,11 +277,13 @@ function MarqueeLane({
   reverse = false,
   duration = 32,
   reduce,
+  onOpen,
 }: {
   srcs: string[]
   reverse?: boolean
   duration?: number
   reduce: boolean
+  onOpen?: (image: GalleryLightboxImage) => void
 }) {
   const { t } = useI18n()
   const lane = reduce ? srcs : [...srcs, ...srcs]
@@ -236,16 +314,29 @@ function MarqueeLane({
       >
         {lane.map((src, i) => (
           <Fragment key={src + i}>
-            <SmartImage
-              src={src}
-              alt=""
-              label={`${t.gallery.photo} ${(i % srcs.length) + 1}`}
-              fit="natural-h"
-              className={cn(
-                'h-24 w-auto shrink-0 rounded-xl border border-gold/20 ring-1 ring-rose/20 shadow-sm transition-transform duration-500 hover:rotate-0 hover:scale-105 sm:h-28',
-                i % 2 === 0 ? 'rotate-1' : '-rotate-1',
-              )}
-            />
+            <PhotoButton
+              label={`${t.ui.viewPhoto}: ${t.gallery.photo} ${(i % srcs.length) + 1}`}
+              onOpen={() =>
+                onOpen?.({
+                  src,
+                  alt: '',
+                  label: `${t.gallery.photo} ${(i % srcs.length) + 1}`,
+                })
+              }
+              disabled={!onOpen}
+              className="w-auto shrink-0 rounded-xl"
+            >
+              <SmartImage
+                src={src}
+                alt=""
+                label={`${t.gallery.photo} ${(i % srcs.length) + 1}`}
+                fit="natural-h"
+                className={cn(
+                  'h-24 w-auto rounded-xl border border-gold/20 ring-1 ring-rose/20 shadow-sm transition-transform duration-500 group-hover:rotate-0 group-hover:scale-105 sm:h-28',
+                  i % 2 === 0 ? 'rotate-1' : '-rotate-1',
+                )}
+              />
+            </PhotoButton>
             {/* A little heart resting between every pair of memories. */}
             <Heart
               className="h-3.5 w-3.5 shrink-0 fill-current text-rose/70"
@@ -259,10 +350,101 @@ function MarqueeLane({
   )
 }
 
+function GalleryLightbox({
+  image,
+  onClose,
+}: {
+  image: GalleryLightboxImage | null
+  onClose: () => void
+}) {
+  const { t } = useI18n()
+  const [zoomed, setZoomed] = useState(false)
+
+  useEffect(() => {
+    if (!image) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [image, onClose])
+
+  if (!image) return null
+
+  const zoomLabel = zoomed ? t.ui.unzoomPhoto : t.ui.zoomPhoto
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={image.alt || image.label}
+      className="fixed inset-0 z-[80] flex items-center justify-center bg-navy/85 p-4 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        aria-label={t.ui.close}
+        onClick={onClose}
+        className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full border border-gold/30 bg-warm-white/95 text-navy shadow-lg transition hover:-translate-y-0.5 hover:text-gold-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+      >
+        <X className="h-5 w-5" strokeWidth={1.8} />
+      </button>
+
+      <figure
+        className="relative max-w-[94vw] text-center"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          aria-label={zoomLabel}
+          onClick={() => setZoomed((value) => !value)}
+          className={cn(
+            'relative max-h-[84vh] max-w-[94vw] overflow-hidden rounded-2xl border border-gold/25 bg-navy/30 shadow-2xl',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-navy',
+            zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in',
+          )}
+        >
+          <img
+            src={image.src}
+            alt={image.alt || image.label}
+            className={cn(
+              'block max-h-[84vh] max-w-[94vw] object-contain transition-transform duration-300 ease-out',
+              zoomed && 'scale-[1.9]',
+            )}
+          />
+          <span className="absolute bottom-3 right-3 grid h-10 w-10 place-items-center rounded-full bg-warm-white/95 text-navy shadow-md">
+            {zoomed ? (
+              <ZoomOut className="h-4 w-4" strokeWidth={1.8} />
+            ) : (
+              <ZoomIn className="h-4 w-4" strokeWidth={1.8} />
+            )}
+          </span>
+        </button>
+        {image.alt && (
+          <figcaption className="mt-3 text-sm font-medium text-warm-white/90">
+            {image.alt}
+          </figcaption>
+        )}
+      </figure>
+    </div>
+  )
+}
+
 export function MediaGallery({ config }: { config: WeddingConfig }) {
   const { images, video, videoPoster } = config.gallery
   const { t } = useI18n()
   const reduce = useReducedMotion()
+  const [lightboxImage, setLightboxImage] = useState<GalleryLightboxImage | null>(
+    null,
+  )
 
   // Draw 30 random memories from the marquee pool on every page load and
   // deal them across the two lanes, so each visit scrolls a different mix.
@@ -271,15 +453,7 @@ export function MediaGallery({ config }: { config: WeddingConfig }) {
   const laneB = laneSrcs.slice(Math.ceil(laneSrcs.length / 2))
 
   // Pair each wall slot with the next photo from the config, reading order.
-  let wallIdx = 0
-  const wallRows = WALL_ROWS.map((row) =>
-    row.map((item) => {
-      if (item === 'panel') return { panel: true as const }
-      const cell = { panel: false as const, frame: item, image: images[wallIdx] as GalleryImage | undefined, index: wallIdx }
-      wallIdx += 1
-      return cell
-    }),
-  )
+  const wallRows = buildWallRows(images)
 
   return (
     <section
@@ -322,15 +496,21 @@ export function MediaGallery({ config }: { config: WeddingConfig }) {
         <SectionReveal className="mt-10 flex flex-col gap-4">
           {wallRows.map((row, r) => (
             <div key={r} className="grid grid-cols-2 gap-4 md:flex md:items-center">
-              {row.map((cell, c) =>
-                cell.panel ? (
-                  <RevealItem
-                    key={c}
-                    className="max-md:order-last max-md:col-span-2 md:flex-[4.5]"
-                  >
-                    <WallPanel config={config} />
-                  </RevealItem>
-                ) : (
+              {row.map((cell, c) => {
+                if (cell.panel) {
+                  return (
+                    <RevealItem
+                      key={c}
+                      className="max-md:order-last max-md:col-span-2 md:flex-[4.5]"
+                    >
+                      <WallPanel config={config} />
+                    </RevealItem>
+                  )
+                }
+
+                const image = cell.image
+
+                return (
                   <RevealItem
                     key={c}
                     className={cn('group', cell.frame.share, cell.frame.mobile)}
@@ -338,13 +518,23 @@ export function MediaGallery({ config }: { config: WeddingConfig }) {
                     <GalleryFrame
                       frame={cell.frame}
                       index={cell.index}
-                      src={cell.image?.src}
-                      alt={cell.image?.alt ?? ''}
-                      focus={cell.image?.focus}
+                      src={image?.src}
+                      alt={image?.alt ?? ''}
+                      focus={image?.focus}
+                      onOpen={
+                        image?.src
+                          ? () =>
+                              setLightboxImage({
+                                src: image.src,
+                                alt: image.alt,
+                                label: `${t.gallery.photo} ${cell.index + 1}`,
+                              })
+                          : undefined
+                      }
                     />
                   </RevealItem>
-                ),
-              )}
+                )
+              })}
             </div>
           ))}
         </SectionReveal>
@@ -364,10 +554,27 @@ export function MediaGallery({ config }: { config: WeddingConfig }) {
           <Heart className="ml-1.5 inline h-3 w-3 fill-current text-rose" strokeWidth={0} />
         </p>
         <div className="flex flex-col gap-4">
-          <MarqueeLane srcs={laneA} duration={60} reduce={!!reduce} />
-          <MarqueeLane srcs={laneB} reverse duration={75} reduce={!!reduce} />
+          <MarqueeLane
+            srcs={laneA}
+            duration={60}
+            reduce={!!reduce}
+            onOpen={(image) => setLightboxImage(image)}
+          />
+          <MarqueeLane
+            srcs={laneB}
+            reverse
+            duration={75}
+            reduce={!!reduce}
+            onOpen={(image) => setLightboxImage(image)}
+          />
         </div>
       </Reveal>
+
+      <GalleryLightbox
+        key={lightboxImage?.src ?? 'closed'}
+        image={lightboxImage}
+        onClose={() => setLightboxImage(null)}
+      />
     </section>
   )
 }

@@ -85,7 +85,7 @@ export function CoupleProfile({
           role={t.couple.brideRole}
           parents={t.couple.brideParents}
           /* Full-body photo — zoom in so the bride's face reads at a glance. */
-          photoClassName="scale-[1.75] origin-[50%_46%]"
+          photoClassName="scale-[2.5] origin-[41%_46%]"
         />
       </div>
 

@@ -156,6 +156,9 @@ export interface Translation {
     close: string
     backToTop: string
     chooseLang: string
+    viewPhoto: string
+    zoomPhoto: string
+    unzoomPhoto: string
   }
   /** Palette names by theme id. Empty entry ⇒ fall back to the Vietnamese
    *  label defined in `config/themes.ts`. */
@@ -239,9 +242,9 @@ export const translations: Record<Lang, Translation> = {
       groomSide: 'Nhà Trai',
       brideSide: 'Nhà Gái',
       groomRole: 'Chú rể · Cơ trưởng',
-      brideRole: 'Cô dâu',
+      brideRole: 'Cô dâu · Cơ phó',
       groomParents: 'Con ông Lê Văn C & bà Phạm Thị D',
-      brideParents: 'Con ông Nguyễn Văn A & bà Trần Thị B',
+      brideParents: 'Con ông Lê Anh Dũng & bà Nguyễn Thị Anh',
     },
     guestLink: {
       title: 'Tạo liên kết mời riêng',
@@ -299,6 +302,9 @@ export const translations: Record<Lang, Translation> = {
       close: 'Đóng',
       backToTop: 'Lên đầu trang',
       chooseLang: 'Chọn ngôn ngữ',
+      viewPhoto: 'Xem ảnh',
+      zoomPhoto: 'Phóng to ảnh',
+      unzoomPhoto: 'Thu nhỏ ảnh',
     },
     // Vietnamese names live in config/themes.ts — empty map falls back there.
     themeNames: {},
@@ -378,11 +384,11 @@ export const translations: Record<Lang, Translation> = {
     },
     couple: {
       groomSide: "Groom's side",
-      brideSide: "Bride's side",
+      brideSide: "Bride's side · Thai Binh",
       groomRole: 'Groom · Captain',
       brideRole: 'Bride',
       groomParents: 'Son of Mr. Lê Văn C & Mrs. Phạm Thị D',
-      brideParents: 'Daughter of Mr. Nguyễn Văn A & Mrs. Trần Thị B',
+      brideParents: 'Daughter of Mr. Lê Anh Dũng & Mrs. Nguyễn Thị Anh',
     },
     guestLink: {
       title: 'Create a personal invite link',
@@ -440,6 +446,9 @@ export const translations: Record<Lang, Translation> = {
       close: 'Close',
       backToTop: 'Back to top',
       chooseLang: 'Choose language',
+      viewPhoto: 'View photo',
+      zoomPhoto: 'Zoom photo',
+      unzoomPhoto: 'Zoom out',
     },
     themeNames: {
       'classic-navy': { label: 'Navy & Champagne', note: 'The classic wedding duo' },
@@ -551,11 +560,11 @@ export const translations: Record<Lang, Translation> = {
     },
     couple: {
       groomSide: '男方',
-      brideSide: '女方',
+      brideSide: '女方 · Thái Bình',
       groomRole: '新郎 · 機長',
       brideRole: '新娘',
       groomParents: 'Lê Văn C 與 Phạm Thị D 之子',
-      brideParents: 'Nguyễn Văn A 與 Trần Thị B 之女',
+      brideParents: 'Lê Anh Dũng 與 Nguyễn Thị Anh 之女',
     },
     guestLink: {
       title: '建立專屬邀請連結',
@@ -613,6 +622,9 @@ export const translations: Record<Lang, Translation> = {
       close: '關閉',
       backToTop: '回到頂部',
       chooseLang: '選擇語言',
+      viewPhoto: '查看照片',
+      zoomPhoto: '放大照片',
+      unzoomPhoto: '縮小照片',
     },
     themeNames: {
       'classic-navy': { label: '海軍藍與香檳', note: '經典婚禮配色' },
@@ -675,6 +687,64 @@ export const defaultLang: Lang = 'vi'
 
 const STORAGE_KEY = 'wedding-lang'
 
+function normaliseBrowserLanguages(): string[] {
+  if (typeof navigator === 'undefined') return []
+
+  const raw = [
+    ...(Array.isArray(navigator.languages) ? navigator.languages : []),
+    navigator.language,
+  ]
+
+  return raw
+    .filter((value): value is string => Boolean(value))
+    .map((value) => value.toLowerCase())
+}
+
+function getBrowserTimeZone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+  } catch {
+    return ''
+  }
+}
+
+export function detectPreferredLang(): Lang {
+  const languages = normaliseBrowserLanguages()
+
+  if (languages.some((value) => value === 'vi' || value.startsWith('vi-'))) {
+    return 'vi'
+  }
+
+  if (
+    languages.some(
+      (value) =>
+        value === 'zh-tw' ||
+        value === 'zh-hant' ||
+        value.startsWith('zh-hant') ||
+        value.includes('hant') ||
+        value.includes('-tw'),
+    )
+  ) {
+    return 'tw'
+  }
+
+  if (languages.some((value) => value === 'en' || value.startsWith('en-'))) {
+    return 'en'
+  }
+
+  if (languages.some((value) => value.startsWith('zh'))) {
+    return 'tw'
+  }
+
+  const timeZone = getBrowserTimeZone()
+  if (timeZone === 'Asia/Taipei') return 'tw'
+  if (timeZone === 'Asia/Ho_Chi_Minh' || timeZone === 'Asia/Saigon') {
+    return 'vi'
+  }
+
+  return defaultLang
+}
+
 export function getSavedLang(): Lang {
   if (typeof window === 'undefined') return defaultLang
   try {
@@ -683,7 +753,7 @@ export function getSavedLang(): Lang {
   } catch {
     /* ignore storage errors */
   }
-  return defaultLang
+  return detectPreferredLang()
 }
 
 export function saveLang(lang: Lang): void {
