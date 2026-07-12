@@ -23,7 +23,18 @@ Tip: compress images (e.g. squoosh.app) so the site loads fast on mobile.
 ## Current setup
 
 Full-resolution masters live in `/photos-original` (git-ignored — they are
-too heavy to ship). The site references the optimized copies in
-`public/images/web/` (long side ≤ 1600 px, JPEG q82, plus `thumb_*` variants
-for the marquee lanes). To regenerate after adding new masters, resize them
-to the same spec and drop the results in `web/`.
+too heavy to ship; the 133 MB passcard PNG cannot even be pushed to GitHub).
+The site only references the optimized copies, which ARE committed, so every
+deploy shows exactly the same photos as local:
+
+- `public/images/web/` — gallery, profile and boarding-pass photos
+  (long side ≤ 1600 px, JPEG q82)
+- `src/assets/marquee/` — memory-lane thumbnails (320 px tall, JPEG q75);
+  the site draws a random 30 of these on every visit
+
+After adding or replacing masters in `/photos-original` (or
+`/photos-original/marquee`), regenerate the optimized copies and commit them:
+
+```
+npm run photos
+```

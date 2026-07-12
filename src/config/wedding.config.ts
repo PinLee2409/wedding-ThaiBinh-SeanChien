@@ -42,8 +42,9 @@ export interface GalleryImage {
   src: string
   alt: string
   caption?: string
-  /** Tailwind object-position class picking which part of the photo shows
-   *  when its frame has a different aspect (e.g. 'object-top'). */
+  /** Tailwind classes picking which part of the photo shows when its frame
+   *  has a different aspect — object-position and optionally a zoom, e.g.
+   *  'object-top' or 'object-[50%_20%] scale-[1.35] origin-[50%_15%]'. */
   focus?: string
 }
 
@@ -227,8 +228,13 @@ export const weddingConfig: WeddingConfig = {
   gallery: {
     images: [
       { src: 'images/web/anh_cuoi_1.jpg', alt: 'Ảnh cưới 1' },
-      // Portrait photo in the wide panorama frame — keep the faces (top) visible.
-      { src: 'images/web/anh_cuoi_2.jpg', alt: 'Ảnh cưới 2', focus: 'object-top' },
+      // Portrait photo in the wide panorama frame: start just below the top
+      // (skips the dark headroom) and zoom in so the couple fills the frame.
+      {
+        src: 'images/web/anh_cuoi_2.jpg',
+        alt: 'Ảnh cưới 2',
+        focus: 'object-[50%_20%] scale-[1.35] origin-[50%_15%]',
+      },
       { src: 'images/web/anh_cuoi_3.jpg', alt: 'Ảnh cưới 3' },
       { src: 'images/web/anh_cuoi_4.jpg', alt: 'Ảnh cưới 4' },
       { src: 'images/web/anh_cuoi_5.jpg', alt: 'Ảnh cưới 5' },

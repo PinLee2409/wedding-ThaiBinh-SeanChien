@@ -101,8 +101,11 @@ function GalleryFrame({
 }) {
   const { t } = useI18n()
   const label = `${t.gallery.photo} ${index + 1}`
+  // A photo with its own zoom keeps it — the hover zoom would undo it.
+  const hasZoom = focus?.includes('scale-')
   const imgClass = cn(
-    'transition-transform duration-700 ease-out group-hover:scale-[1.04]',
+    'transition-transform duration-700 ease-out',
+    !hasZoom && 'group-hover:scale-[1.04]',
     focus,
   )
 
