@@ -91,12 +91,8 @@ export interface Translation {
     signature: string
   }
   couple: {
-    groomSide: string
-    brideSide: string
     groomRole: string
     brideRole: string
-    groomParents: string
-    brideParents: string
   }
   guestLink: {
     title: string
@@ -123,19 +119,13 @@ export interface Translation {
     passenger: string
     flight: string
     boarding: string
-    gate: string
-    seat: string
     date: string
-    class: string
     venue: string
     photoLabel: string
     passengerFallback: string
     /** Localised field VALUES (the config keeps only data, not copy). */
     fromValue: string
     toValue: string
-    gateValue: string
-    seatValue: string
-    classValue: string
   }
   calendar: {
     /** May contain {groom} and {bride} placeholders. */
@@ -239,12 +229,8 @@ export const translations: Record<Lang, Translation> = {
       signature: 'Với tất cả yêu thương,',
     },
     couple: {
-      groomSide: 'Nhà Trai',
-      brideSide: 'Nhà Gái',
-      groomRole: 'Chú rể · Cơ trưởng',
-      brideRole: 'Cô dâu · Cơ phó',
-      groomParents: 'Con ông Lê Văn C & bà Phạm Thị D',
-      brideParents: 'Con ông Lê Anh Dũng & bà Nguyễn Thị Anh',
+      groomRole: 'Chú rể',
+      brideRole: 'Cô dâu',
     },
     guestLink: {
       title: 'Tạo liên kết mời riêng',
@@ -271,26 +257,20 @@ export const translations: Record<Lang, Translation> = {
       passenger: 'Hành khách',
       flight: 'Chuyến bay',
       boarding: 'Đón khách',
-      gate: 'Cổng',
-      seat: 'Ghế',
       date: 'Ngày',
-      class: 'Hạng',
       venue: 'Địa điểm',
       photoLabel: 'Ảnh cưới',
       passengerFallback: 'Quý Khách',
       fromValue: 'Ga Độc Thân',
       toValue: 'Bến Đỗ Hạnh Phúc',
-      gateValue: 'Sảnh cưới',
-      seatValue: 'Khách VIP',
-      classValue: 'Trọn đời ♥',
     },
     calendar: {
-      summary: 'Đám cưới {groom} & {bride}',
+      summary: 'Đám cưới {bride} & {groom}',
       description: 'Flight to Forever — Cùng lên chuyến bay hạnh phúc.',
     },
     meta: {
-      title: 'Flight to Forever · Thiệp cưới',
-      description: 'Thiệp cưới trực tuyến — cùng lên chuyến bay hạnh phúc.',
+      title: 'Thái Bình & Sean Chien · Thiệp cưới',
+      description: 'Thiệp cưới của Thái Bình và Sean Chien — chuyến bay đến trọn đời.',
     },
     ui: {
       music: 'Nhạc nền',
@@ -383,12 +363,8 @@ export const translations: Record<Lang, Translation> = {
       signature: 'With all our love,',
     },
     couple: {
-      groomSide: "Groom's side",
-      brideSide: "Bride's side · Thai Binh",
-      groomRole: 'Groom · Captain',
+      groomRole: 'Groom',
       brideRole: 'Bride',
-      groomParents: 'Son of Mr. Lê Văn C & Mrs. Phạm Thị D',
-      brideParents: 'Daughter of Mr. Lê Anh Dũng & Mrs. Nguyễn Thị Anh',
     },
     guestLink: {
       title: 'Create a personal invite link',
@@ -415,18 +391,12 @@ export const translations: Record<Lang, Translation> = {
       passenger: 'Passenger',
       flight: 'Flight',
       boarding: 'Boarding',
-      gate: 'Gate',
-      seat: 'Seat',
       date: 'Date',
-      class: 'Class',
       venue: 'Venue',
       photoLabel: 'Wedding photo',
       passengerFallback: 'Honored Guest',
       fromValue: 'Single Terminal',
       toValue: 'Happy Destination',
-      gateValue: 'Wedding Hall',
-      seatValue: 'VIP Guest',
-      classValue: 'Forever ♥',
     },
     calendar: {
       summary: 'Wedding of {groom} & {bride}',
@@ -559,12 +529,8 @@ export const translations: Record<Lang, Translation> = {
       signature: '致上滿滿的愛，',
     },
     couple: {
-      groomSide: '男方',
-      brideSide: '女方 · Thái Bình',
-      groomRole: '新郎 · 機長',
+      groomRole: '新郎',
       brideRole: '新娘',
-      groomParents: 'Lê Văn C 與 Phạm Thị D 之子',
-      brideParents: 'Lê Anh Dũng 與 Nguyễn Thị Anh 之女',
     },
     guestLink: {
       title: '建立專屬邀請連結',
@@ -591,18 +557,12 @@ export const translations: Record<Lang, Translation> = {
       passenger: '乘客',
       flight: '航班',
       boarding: '登機時間',
-      gate: '登機門',
-      seat: '座位',
       date: '日期',
-      class: '艙等',
       venue: '地點',
       photoLabel: '婚紗照',
       passengerFallback: '貴賓',
       fromValue: '單身',
       toValue: '永遠',
-      gateValue: '婚宴會館',
-      seatValue: '貴賓席',
-      classValue: '永遠 ♥',
     },
     calendar: {
       summary: '{groom} & {bride} 婚禮',
@@ -683,8 +643,6 @@ export function formatWeekday(iso: string, lang: Lang): string {
   }
 }
 
-export const defaultLang: Lang = 'vi'
-
 const STORAGE_KEY = 'wedding-lang'
 
 function normaliseBrowserLanguages(): string[] {
@@ -742,18 +700,27 @@ export function detectPreferredLang(): Lang {
     return 'vi'
   }
 
-  return defaultLang
+  return 'vi'
 }
 
-export function getSavedLang(): Lang {
-  if (typeof window === 'undefined') return defaultLang
+export function getSavedLang(
+  enabledLanguages: readonly Lang[],
+  defaultLanguage: Lang,
+): Lang {
+  if (typeof window === 'undefined') return defaultLanguage
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved === 'vi' || saved === 'en' || saved === 'tw') return saved
+    if (
+      (saved === 'vi' || saved === 'en' || saved === 'tw') &&
+      enabledLanguages.includes(saved)
+    ) {
+      return saved
+    }
   } catch {
     /* ignore storage errors */
   }
-  return detectPreferredLang()
+  const preferred = detectPreferredLang()
+  return enabledLanguages.includes(preferred) ? preferred : defaultLanguage
 }
 
 export function saveLang(lang: Lang): void {

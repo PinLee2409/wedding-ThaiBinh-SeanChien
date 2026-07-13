@@ -1,30 +1,40 @@
 import { Heart } from 'lucide-react'
-import type { Person } from '../../config/wedding.config'
+import { motion, useReducedMotion } from 'motion/react'
+import type { Person, WeddingConfig } from '../../config/wedding.config'
 import { cn } from '../../lib/cn'
+import { getOrderedCouple } from '../../lib/couple'
+import { easeLux } from '../../lib/motion'
 import { useI18n } from '../../i18n/LanguageContext'
 import { SmartImage } from '../ui/SmartImage'
 
 function ProfileCard({
   person,
-  side,
   role,
-  parents,
+  entryX,
+  delay,
   photoClassName,
 }: {
   person: Person
-  side: string
   role: string
-  parents: string
+  entryX: number
+  delay: number
   /** Extra crop/zoom tuning for this person's portrait. */
   photoClassName?: string
 }) {
+  const reduce = useReducedMotion()
+
   return (
-    <div
+    <motion.div
       className={cn(
-        'group relative flex h-full flex-col items-center rounded-3xl border border-gold/20 bg-warm-white/70 text-center',
+        'group relative flex h-full min-w-0 flex-col items-center rounded-3xl border border-gold/20 bg-warm-white/70 text-center',
         'p-[clamp(0.75rem,3.5vw,2rem)] shadow-sm backdrop-blur-sm transition duration-500',
-        'hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_22px_44px_-26px_rgba(198,138,116,0.65)]',
+        'hover:border-gold/50 hover:shadow-[0_22px_44px_-26px_rgba(198,138,116,0.65)]',
       )}
+      initial={reduce ? false : { opacity: 0, x: entryX, scale: 0.97 }}
+      whileInView={{ opacity: 1, x: 0, scale: 1 }}
+      whileHover={reduce ? undefined : { y: -4 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.78, ease: easeLux, delay }}
     >
       {/* Avatar with soft gold glow on hover */}
       <div className="relative">
@@ -42,62 +52,69 @@ function ProfileCard({
         />
       </div>
 
-      <span className="label-caps mt-[clamp(0.6rem,2vw,1rem)] text-[clamp(0.55rem,2.2vw,0.7rem)] text-gold">
-        {side}
+      <span className="label-caps mt-[clamp(0.65rem,2vw,1rem)] text-[clamp(0.55rem,2.2vw,0.7rem)] text-gold">
+        {role}
       </span>
-      <h3 className="mt-1 font-display font-semibold leading-tight text-navy text-[clamp(1.05rem,3.6vw,1.7rem)]">
+      <h3 className="mt-1 text-balance break-words font-display font-semibold leading-tight text-navy text-[clamp(1.05rem,3.6vw,1.7rem)]">
         {person.fullName ?? person.name}
       </h3>
-      <p className="mt-0.5 text-navy-400 text-[clamp(0.72rem,2.4vw,0.9rem)]">
-        {role}
-      </p>
-      {parents && (
-        <p className="mt-2 leading-relaxed text-navy-400 text-[clamp(0.64rem,2.2vw,0.8rem)]">
-          {parents}
-        </p>
-      )}
-    </div>
+    </motion.div>
   )
 }
 
-/** Groom & bride — ALWAYS two columns on every screen size. */
-export function CoupleProfile({
-  groom,
-  bride,
-}: {
-  groom: Person
-  bride: Person
-}) {
+/** Couple portraits — repository-specific order, always two columns. */
+export function CoupleProfile({ config }: { config: WeddingConfig }) {
   const { t } = useI18n()
+  const reduce = useReducedMotion()
+  const orderedCouple = getOrderedCouple(config)
 
   return (
     <div className="relative mx-auto max-w-3xl">
       <div className="grid grid-cols-2 items-stretch gap-[clamp(0.6rem,3.5vw,2.5rem)]">
-        <ProfileCard
-          person={groom}
-          side={t.couple.groomSide}
-          role={t.couple.groomRole}
-          parents={t.couple.groomParents}
-        />
-        <ProfileCard
-          person={bride}
-          side={t.couple.brideSide}
-          role={t.couple.brideRole}
-          parents={t.couple.brideParents}
-          /* Full-body photo — zoom in so the bride's face reads at a glance. */
-          photoClassName="scale-[2.5] origin-[41%_46%]"
-        />
+        {orderedCouple.map(({ key, person }, index) => (
+          <ProfileCard
+            key={key}
+            person={person}
+            role={key === 'groom' ? t.couple.groomRole : t.couple.brideRole}
+            entryX={index === 0 ? -22 : 22}
+            delay={index * 0.12}
+            /* Full-body photo — zoom in so the bride's face reads at a glance. */
+            photoClassName={
+              key === 'bride' ? 'scale-[2.5] origin-[41%_46%]' : undefined
+            }
+          />
+        ))}
       </div>
 
       {/* Center heart accent (hidden on the smallest screens) */}
-      <span
+      <motion.span
         className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 place-items-center sm:grid"
         aria-hidden="true"
+        initial={reduce ? false : { opacity: 0, scale: 0.55 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{
+          type: 'spring',
+          stiffness: 210,
+          damping: 14,
+          delay: reduce ? 0 : 0.55,
+        }}
       >
         <span className="grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-warm-white text-gold shadow-md">
-          <Heart className="h-5 w-5 fill-current" />
+          <motion.span
+            className="inline-flex"
+            animate={reduce ? undefined : { scale: [1, 1.16, 1] }}
+            transition={{
+              duration: 0.8,
+              repeat: Infinity,
+              repeatDelay: 2.4,
+              ease: 'easeInOut',
+            }}
+          >
+            <Heart className="h-5 w-5 fill-current" />
+          </motion.span>
         </span>
-      </span>
+      </motion.span>
     </div>
   )
 }

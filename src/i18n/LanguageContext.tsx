@@ -7,6 +7,7 @@ import { LOCALES, getSavedLang, saveLang, translations } from './translations'
 interface LanguageContextValue {
   lang: Lang
   setLang: (lang: Lang) => void
+  enabledLanguages: readonly Lang[]
   /** The active dictionary — `t.gate.title`, `t.ui.close`, … */
   t: Translation
 }
@@ -17,8 +18,18 @@ const LanguageContext = createContext<LanguageContextValue | null>(null)
  * Guest-facing language state (vi / en / tw). Persisted to localStorage and
  * mirrored onto <html lang> so screen readers and search engines follow along.
  */
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(() => getSavedLang())
+export function LanguageProvider({
+  children,
+  enabledLanguages,
+  defaultLanguage,
+}: {
+  children: ReactNode
+  enabledLanguages: readonly Lang[]
+  defaultLanguage: Lang
+}) {
+  const [lang, setLangState] = useState<Lang>(() =>
+    getSavedLang(enabledLanguages, defaultLanguage),
+  )
 
   useEffect(() => {
     document.documentElement.lang = LOCALES[lang].toLowerCase()
@@ -36,7 +47,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] }}>
+    <LanguageContext.Provider
+      value={{
+        lang,
+        setLang,
+        enabledLanguages,
+        t: translations[lang],
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   )

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { applyThemeById, getSavedThemeId } from './config/themes'
 import { LanguageProvider } from './i18n/LanguageContext'
+import { weddingConfig } from './config/wedding.config'
 
 // Apply the saved colour theme before first paint to avoid a flash.
 applyThemeById(getSavedThemeId())
@@ -17,7 +18,10 @@ if ('scrollRestoration' in history) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LanguageProvider>
+    <LanguageProvider
+      enabledLanguages={weddingConfig.site.enabledLanguages}
+      defaultLanguage={weddingConfig.site.defaultLanguage}
+    >
       <App />
     </LanguageProvider>
   </StrictMode>,

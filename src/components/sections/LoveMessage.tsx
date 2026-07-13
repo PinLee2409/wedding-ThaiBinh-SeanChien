@@ -1,4 +1,7 @@
+import { Heart } from 'lucide-react'
+import { motion, useReducedMotion } from 'motion/react'
 import type { WeddingConfig } from '../../config/wedding.config'
+import { getOrderedCouple } from '../../lib/couple'
 import { useI18n } from '../../i18n/LanguageContext'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
@@ -6,8 +9,9 @@ import { PassportStamp } from '../decorations/PassportStamp'
 import { CoupleProfile } from './CoupleProfile'
 
 export function LoveMessage({ config }: { config: WeddingConfig }) {
-  const { couple } = config
   const { t } = useI18n()
+  const reduce = useReducedMotion()
+  const [firstPartner, secondPartner] = getOrderedCouple(config)
 
   return (
     <section
@@ -37,15 +41,32 @@ export function LoveMessage({ config }: { config: WeddingConfig }) {
             </p>
           ))}
           <p className="mt-2 text-sm text-navy-400">{t.love.signature}</p>
+          <motion.span
+            className="inline-flex text-rose"
+            aria-hidden="true"
+            animate={
+              reduce
+                ? undefined
+                : { scale: [1, 1.2, 1], rotate: [0, -4, 0, 4, 0] }
+            }
+            transition={{
+              duration: 1.05,
+              repeat: Infinity,
+              repeatDelay: 2.2,
+              ease: 'easeInOut',
+            }}
+          >
+            <Heart className="h-5 w-5 fill-current" strokeWidth={1.2} />
+          </motion.span>
           <p className="font-display text-2xl text-gold-dark">
-            {couple.groom.name} &amp; {couple.bride.name}
+            {firstPartner.person.name} &amp; {secondPartner.person.name}
           </p>
         </Reveal>
       </div>
 
       {/* Couple & family — always two columns */}
       <Reveal delay={0.1} className="mt-16">
-        <CoupleProfile groom={couple.groom} bride={couple.bride} />
+        <CoupleProfile config={config} />
       </Reveal>
     </section>
   )

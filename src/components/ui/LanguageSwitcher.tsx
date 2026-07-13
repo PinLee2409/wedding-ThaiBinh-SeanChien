@@ -6,8 +6,6 @@ import { translations } from '../../i18n/translations'
 import { useI18n } from '../../i18n/LanguageContext'
 import { cn } from '../../lib/cn'
 
-const LANG_ORDER: Lang[] = ['vi', 'en', 'tw']
-
 /** Short badge shown on the floating button. */
 const BADGE: Record<Lang, string> = { vi: 'VI', en: 'EN', tw: '繁' }
 
@@ -16,7 +14,7 @@ const BADGE: Record<Lang, string> = { vi: 'VI', en: 'EN', tw: '繁' }
  * the three supported languages. Same interaction pattern as the ThemePicker.
  */
 export function LanguageSwitcher() {
-  const { lang, setLang, t } = useI18n()
+  const { lang, setLang, t, enabledLanguages } = useI18n()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -37,6 +35,8 @@ export function LanguageSwitcher() {
     }
   }, [open])
 
+  if (enabledLanguages.length <= 1) return null
+
   return (
     <div ref={rootRef} className="relative">
       <AnimatePresence>
@@ -50,7 +50,7 @@ export function LanguageSwitcher() {
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className="absolute bottom-14 right-0 w-44 origin-bottom-right rounded-2xl border border-gold/30 glass p-2 shadow-2xl"
           >
-            {LANG_ORDER.map((code) => {
+            {enabledLanguages.map((code) => {
               const active = code === lang
               return (
                 <button

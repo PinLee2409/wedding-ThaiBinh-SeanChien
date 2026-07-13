@@ -100,7 +100,7 @@ function App() {
 
         <DownloadInvitation config={weddingConfig} guestName={guestName} />
 
-        <RouteDivider className="bg-cream" />
+        <RouteDivider className="bg-gradient-to-b from-cream to-ivory" />
 
         <FlightTimeline config={weddingConfig} />
 

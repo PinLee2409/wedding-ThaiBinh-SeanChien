@@ -3,6 +3,7 @@ import { useInView } from 'motion/react'
 import confetti from 'canvas-confetti'
 import { Plane } from 'lucide-react'
 import type { WeddingConfig } from '../../config/wedding.config'
+import { getOrderedCouple } from '../../lib/couple'
 import { useI18n } from '../../i18n/LanguageContext'
 import { formatWeekday } from '../../i18n/translations'
 import { Clouds } from '../decorations/Clouds'
@@ -17,6 +18,7 @@ export function FinalThankYou({ config }: { config: WeddingConfig }) {
   const { couple, date, event } = config
   const { t, lang } = useI18n()
   const weekday = formatWeekday(date.iso, lang)
+  const [firstPartner, secondPartner] = getOrderedCouple(config)
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.5 })
 
@@ -85,9 +87,9 @@ export function FinalThankYou({ config }: { config: WeddingConfig }) {
         </p>
 
         <div className="mt-2 flex items-center gap-4 font-script text-4xl leading-snug sm:text-5xl">
-          <span>{couple.groom.name}</span>
+          <span>{firstPartner.person.name}</span>
           <span className="font-display text-3xl text-gold">&amp;</span>
-          <span>{couple.bride.name}</span>
+          <span>{secondPartner.person.name}</span>
         </div>
 
         <p className="label-caps text-[11px] text-warm-white/80">

@@ -6,6 +6,7 @@ import { useReducedMotion } from 'motion/react'
 import type { WeddingConfig } from '../../config/wedding.config'
 import type { GalleryImage } from '../../config/wedding.config'
 import { cn } from '../../lib/cn'
+import { getOrderedCouple } from '../../lib/couple'
 import { useI18n } from '../../i18n/LanguageContext'
 import { SectionHeading } from '../ui/SectionHeading'
 import { SmartImage } from '../ui/SmartImage'
@@ -252,13 +253,14 @@ function GalleryFrame({
 /** Decorative plaque between the two bottom-corner stamps. */
 function WallPanel({ config }: { config: WeddingConfig }) {
   const { couple, date } = config
+  const [firstPartner, secondPartner] = getOrderedCouple(config)
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2.5 rounded-3xl border border-gold/25 bg-gradient-to-br from-sky-soft/70 via-warm-white to-ivory p-6 text-center shadow-sm max-md:py-10 md:aspect-[3/2]">
       <Plane className="h-5 w-5 rotate-45 text-gold" strokeWidth={1.4} />
       <p className="font-script text-[clamp(1.7rem,4vw,2.6rem)] leading-tight text-navy-600">
-        {couple.groom.name}
+        {firstPartner.person.name}
         <span className="mx-2 text-rose">♥</span>
-        {couple.bride.name}
+        {secondPartner.person.name}
       </p>
       <span className="label-caps text-[10px] text-gold-dark">{date.displayDate}</span>
       {couple.hashtag && (

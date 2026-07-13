@@ -2,6 +2,7 @@ import { forwardRef } from 'react'
 import { Plane } from 'lucide-react'
 import type { WeddingConfig } from '../../config/wedding.config'
 import { cn } from '../../lib/cn'
+import { getOrderedCouple } from '../../lib/couple'
 import { useI18n } from '../../i18n/LanguageContext'
 import { formatWeekday } from '../../i18n/translations'
 import { SmartImage } from '../ui/SmartImage'
@@ -85,11 +86,17 @@ function Field({
 }: {
   label: string
   value: string
-  align?: 'left' | 'right'
+  align?: 'left' | 'center' | 'right'
   nowrap?: boolean
 }) {
   return (
-    <div className={cn('flex flex-col gap-[0.15em]', align === 'right' && 'items-end text-right')}>
+    <div
+      className={cn(
+        'flex min-w-0 flex-col gap-[0.15em]',
+        align === 'center' && 'items-center text-center',
+        align === 'right' && 'items-end text-right',
+      )}
+    >
       <span className="text-[0.6em] font-medium uppercase tracking-[0.22em] text-gold-dark">
         {label}
       </span>
@@ -97,6 +104,7 @@ function Field({
         className={cn(
           'font-display text-[1.05em] font-semibold leading-tight text-navy',
           nowrap && 'whitespace-nowrap',
+          !nowrap && 'text-balance',
         )}
       >
         {value}
@@ -116,6 +124,7 @@ export const BoardingPassCard = forwardRef<HTMLDivElement, BoardingPassCardProps
     const weekday = formatWeekday(date.iso, lang)
     const passenger = guestName.trim() || t.pass.passengerFallback
     const flightNo = `LOVE-${event.flightCode}`
+    const [firstPartner, secondPartner] = getOrderedCouple(config)
 
     return (
       <div
@@ -152,7 +161,7 @@ export const BoardingPassCard = forwardRef<HTMLDivElement, BoardingPassCardProps
           <div className="relative overflow-hidden rounded-[0.9em] ring-1 ring-gold/30">
             <SmartImage
               src={boardingPass.poster}
-              alt={`${couple.groom.name} & ${couple.bride.name}`}
+              alt={`${firstPartner.person.name} & ${secondPartner.person.name}`}
               label={t.pass.photoLabel}
               /* Eager so the (possibly missing) poster resolves to a real image
                  or a placeholder BEFORE export — a pending 404 <img> would make
@@ -173,9 +182,9 @@ export const BoardingPassCard = forwardRef<HTMLDivElement, BoardingPassCardProps
             {t.pass.weddingOf}
           </span>
           <p className="mt-[0.35em] whitespace-nowrap font-display text-[1.85em] font-semibold leading-[1.1]">
-            {couple.groom.name}
+            {firstPartner.person.name}
             <span className="mx-[0.25em] text-gold">&amp;</span>
-            {couple.bride.name}
+            {secondPartner.person.name}
           </p>
           <span className="mt-[0.35em] text-[0.66em] uppercase tracking-[0.24em] text-navy-400">
             {weekday} · {date.displayDate}
@@ -208,13 +217,10 @@ export const BoardingPassCard = forwardRef<HTMLDivElement, BoardingPassCardProps
           <div className="border-t border-dashed border-gold/30 pt-[0.9em]">
             <Field label={t.pass.passenger} value={passenger} nowrap={false} />
           </div>
-          <div className="grid grid-cols-2 gap-x-[1.2em] gap-y-[0.9em]">
+          <div className="grid grid-cols-3 items-start gap-x-[0.7em]">
             <Field label={t.pass.flight} value={flightNo} />
-            <Field label={t.pass.boarding} value={date.time} align="right" />
-            <Field label={t.pass.gate} value={t.pass.gateValue} />
-            <Field label={t.pass.seat} value={t.pass.seatValue} align="right" />
-            <Field label={t.pass.date} value={date.displayDate} />
-            <Field label={t.pass.class} value={t.pass.classValue} align="right" />
+            <Field label={t.pass.boarding} value={date.time} align="center" />
+            <Field label={t.pass.date} value={date.displayDate} align="right" />
           </div>
           {/* Venue — the one detail every guest actually needs on the pass. */}
           <div className="border-t border-dashed border-gold/30 pt-[0.9em]">

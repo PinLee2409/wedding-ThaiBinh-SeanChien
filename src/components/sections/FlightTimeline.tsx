@@ -90,7 +90,7 @@ export function FlightTimeline({ config }: { config: WeddingConfig }) {
   return (
     <section
       id="timeline"
-      className="bg-ivory px-5 py-24"
+      className="bg-ivory px-5 pb-24 pt-16 sm:pt-20"
       aria-label={t.timeline.title}
     >
       <div className="mx-auto max-w-4xl">

@@ -67,7 +67,7 @@ export function DownloadInvitation({
   return (
     <section
       id="boarding-pass"
-      className="relative bg-gradient-to-b from-cream via-ivory to-cream px-4 py-20 sm:px-6"
+      className="relative bg-gradient-to-b from-cream via-ivory to-cream px-4 pb-8 pt-20 sm:px-6 sm:pb-10 sm:pt-24"
       aria-label={t.download.title}
     >
       <div className="mx-auto flex max-w-2xl flex-col items-center gap-10">
@@ -88,8 +88,26 @@ export function DownloadInvitation({
           viewport={{ once: true, amount: 0.35 }}
           style={{ perspective: 1000 }}
         >
-          <div className="mx-auto w-full max-w-[400px] [container-type:inline-size] sm:max-w-[440px]">
+          <div className="relative isolate mx-auto w-full max-w-[400px] rounded-[1.5em] [container-type:inline-size] sm:max-w-[440px]">
             <BoardingPassCard config={config} guestName={guestName} />
+            {!reduce && (
+              <span
+                className="pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-[1.5em]"
+                aria-hidden="true"
+              >
+                <motion.span
+                  className="absolute -bottom-1/4 -top-1/4 w-[28%] -skew-x-12 bg-gradient-to-r from-transparent via-white/55 to-transparent mix-blend-screen"
+                  initial={{ left: '-45%', opacity: 0 }}
+                  whileInView={{ left: '125%', opacity: [0, 0.58, 0] }}
+                  viewport={{ once: true, amount: 0.45 }}
+                  transition={{
+                    duration: 1.25,
+                    delay: 0.55,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                />
+              </span>
+            )}
           </div>
         </motion.div>
 

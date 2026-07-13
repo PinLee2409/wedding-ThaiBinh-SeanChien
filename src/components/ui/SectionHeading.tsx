@@ -1,5 +1,7 @@
 import { Plane } from 'lucide-react'
+import { motion, useReducedMotion } from 'motion/react'
 import { cn } from '../../lib/cn'
+import { easeLux } from '../../lib/motion'
 
 interface SectionHeadingProps {
   kicker?: string
@@ -18,6 +20,10 @@ export function SectionHeading({
   tone = 'navy',
 }: SectionHeadingProps) {
   const isCenter = align === 'center'
+  const reduce = useReducedMotion()
+  const lineInitial = reduce ? false : { opacity: 0, scaleX: 0 }
+  const lineVisible = { opacity: 1, scaleX: 1 }
+
   return (
     <div
       className={cn(
@@ -46,9 +52,40 @@ export function SectionHeading({
         )}
         aria-hidden="true"
       >
-        <span className="h-px w-10 bg-gradient-to-r from-transparent to-gold" />
-        <Plane className="h-3.5 w-3.5 -rotate-12" strokeWidth={1.5} />
-        <span className="h-px w-10 bg-gradient-to-l from-transparent to-gold" />
+        <motion.span
+          className="h-px w-10 origin-right bg-gradient-to-r from-transparent to-gold"
+          initial={lineInitial}
+          whileInView={lineVisible}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.65, ease: easeLux }}
+        />
+        <motion.span
+          className={cn('inline-flex', reduce && '-rotate-12')}
+          initial={reduce ? false : { opacity: 0, rotate: -32, scale: 0.55 }}
+          whileInView={
+            reduce ? undefined : { opacity: 1, rotate: -12, scale: 1 }
+          }
+          viewport={{ once: true, amount: 0.8 }}
+          transition={
+            reduce
+              ? undefined
+              : {
+                  type: 'spring',
+                  stiffness: 180,
+                  damping: 15,
+                  delay: 0.2,
+                }
+          }
+        >
+          <Plane className="h-3.5 w-3.5" strokeWidth={1.5} />
+        </motion.span>
+        <motion.span
+          className="h-px w-10 origin-left bg-gradient-to-l from-transparent to-gold"
+          initial={lineInitial}
+          whileInView={lineVisible}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.65, ease: easeLux }}
+        />
       </div>
 
       {subtitle && (

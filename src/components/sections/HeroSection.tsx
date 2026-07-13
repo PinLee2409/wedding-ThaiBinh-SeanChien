@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { ChevronDown, Plane } from 'lucide-react'
 import type { WeddingConfig } from '../../config/wedding.config'
+import { getOrderedCouple } from '../../lib/couple'
 import { fadeUp, staggerContainer } from '../../lib/motion'
 import { useI18n } from '../../i18n/LanguageContext'
 import { formatWeekday } from '../../i18n/translations'
@@ -29,7 +30,8 @@ export function HeroSection({
 }: HeroSectionProps) {
   const reduce = useReducedMotion()
   const { t, lang } = useI18n()
-  const { event, couple, date, hero } = config
+  const { event, date, hero } = config
+  const [firstPartner, secondPartner] = getOrderedCouple(config)
   const weekday = formatWeekday(date.iso, lang)
 
   return (
@@ -145,9 +147,9 @@ export function HeroSection({
           variants={fadeUp}
           className="flex items-center justify-center gap-4 font-script text-[clamp(2.1rem,7.5vw,3.4rem)] leading-snug text-navy"
         >
-          <span>{couple.groom.name}</span>
+          <span>{firstPartner.person.name}</span>
           <Plane className="h-5 w-5 shrink-0 rotate-45 text-gold-dark" strokeWidth={1.5} />
-          <span>{couple.bride.name}</span>
+          <span>{secondPartner.person.name}</span>
         </motion.div>
 
         <motion.div variants={fadeUp} className="flex flex-col items-center gap-1">

@@ -1,3 +1,5 @@
+import type { Lang } from '../i18n/translations'
+
 /**
  * ─────────────────────────────────────────────────────────────────────────────
  *  WEDDING CONFIG — the single source of truth for the whole invitation.
@@ -21,8 +23,6 @@ export interface Person {
   fullName?: string
   /** e.g. "Cô dâu" / "Chú rể" */
   role: string
-  /** Optional parents line */
-  parents?: string
   /** Portrait photo in /public/images */
   photo?: string
 }
@@ -49,6 +49,13 @@ export interface GalleryImage {
 }
 
 export interface WeddingConfig {
+  /** Per-repository identity, language availability and visible name order. */
+  site: {
+    enabledLanguages: readonly Lang[]
+    defaultLanguage: Lang
+    coupleOrder: readonly ['bride' | 'groom', 'bride' | 'groom']
+  }
+
   /** Names & flight code used across hero, boarding pass, etc. */
   event: {
     /** Big hero title */
@@ -113,8 +120,6 @@ export interface WeddingConfig {
     poster: string
     from: string
     to: string
-    gate: string
-    seat: string
     /** Small print at the bottom of the pass. */
     footnote: string
   }
@@ -138,6 +143,12 @@ export interface WeddingConfig {
 }
 
 export const weddingConfig: WeddingConfig = {
+  site: {
+    enabledLanguages: ['vi'],
+    defaultLanguage: 'vi',
+    coupleOrder: ['bride', 'groom'],
+  },
+
   event: {
     tagline: 'Flight to Forever',
     kicker: 'Save the Date',
@@ -148,16 +159,14 @@ export const weddingConfig: WeddingConfig = {
   couple: {
     bride: {
       name: 'Thái Bình',
-      fullName: 'Lê Thị Thái Bình',
+      fullName: 'Thái Bình',
       role: 'Cô dâu',
-      parents: 'Con ông Lê Anh Dũng & bà Nguyễn Thị Anh · Thái Bình',
       photo: 'images/web/anh_nu.jpg',
     },
     groom: {
-      name: 'xxx',
-      fullName: 'xxxx',
-      role: 'Chú rể · Cơ trưởng',
-      parents: 'Con ông Lê Văn C & bà Phạm Thị D',
+      name: 'Sean Chien',
+      fullName: 'Sean Chien',
+      role: 'Chú rể',
       photo: 'images/web/anh_nam.jpg',
     },
     hashtag: '#ChuyenBayHanhPhuc',
@@ -250,8 +259,6 @@ export const weddingConfig: WeddingConfig = {
     poster: 'images/web/anhcuoi_passcard.jpg',
     from: 'Single Life',
     to: 'Forever',
-    gate: 'Wedding Hall',
-    seat: 'VIP Guest',
     footnote: 'Vui lòng có mặt đúng giờ để không lỡ chuyến bay hạnh phúc ♥',
   },
 
