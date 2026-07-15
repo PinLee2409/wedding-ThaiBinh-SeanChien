@@ -54,6 +54,8 @@ export interface WeddingConfig {
     enabledLanguages: readonly Lang[]
     defaultLanguage: Lang
     coupleOrder: readonly ['bride' | 'groom', 'bride' | 'groom']
+    /** Canonical deployed URL encoded into the scannable invitation QR. */
+    publicUrl: string
   }
 
   /** Names & flight code used across hero, boarding pass, etc. */
@@ -136,9 +138,13 @@ export interface WeddingConfig {
   }
 
   music: {
-    /** Background track in /public/music. Leave "" to hide the toggle. */
-    src: string
-    title: string
+    /** Sequential background playlist in /public/music. Empty hides controls. */
+    tracks: Array<{
+      src: string
+      title: string
+      artist: string
+    }>
+    initialVolume: number
   }
 }
 
@@ -147,6 +153,7 @@ export const weddingConfig: WeddingConfig = {
     enabledLanguages: ['vi'],
     defaultLanguage: 'vi',
     coupleOrder: ['bride', 'groom'],
+    publicUrl: 'https://pinlee2409.github.io/wedding-ThaiBinh-SeanChien/',
   },
 
   event: {
@@ -211,7 +218,7 @@ export const weddingConfig: WeddingConfig = {
       date: 'Xuân 2021',
       title: 'Chính thức cất cánh',
       description:
-        'Chúng mình về chung một đội bay, cùng nhau viết nên câu chuyện của riêng mình.',
+        'Thái Bình và Sean Chien về chung một đội bay, cùng nhau viết tiếp hành trình yêu thương.',
       image: 'images/timeline-2.jpg',
     },
     {
@@ -259,27 +266,44 @@ export const weddingConfig: WeddingConfig = {
     poster: 'images/web/anhcuoi_passcard.jpg',
     from: 'Single Life',
     to: 'Forever',
-    footnote: 'Vui lòng có mặt đúng giờ để không lỡ chuyến bay hạnh phúc ♥',
+    footnote:
+      'Kính mong Quý khách có mặt đúng giờ để không lỡ chuyến bay hạnh phúc ♥',
   },
 
   loveMessage: {
-    heading: 'Đôi lời từ chúng mình',
+    heading: 'Đôi lời từ cô dâu và chú rể',
     body: [
-      'Có những chuyến bay đưa ta đến những vùng đất mới, và có một chuyến bay đưa hai con người đến trọn đời bên nhau.',
-      'Cảm ơn bạn đã là một phần trong hành trình của chúng mình. Sự hiện diện của bạn chính là món quà quý giá nhất trong ngày trọng đại này.',
+      'Có những chuyến bay đưa con người đến những vùng đất mới, và có một chuyến bay đưa hai trái tim về bên nhau trọn đời.',
+      'Xin trân trọng cảm ơn Quý khách đã dành thời gian đến chung vui. Sự hiện diện của Quý khách là niềm vinh hạnh và món quà quý giá đối với hai gia đình.',
     ],
-    signature: 'Với tất cả yêu thương,',
+    signature: 'Với tất cả yêu thương và lòng biết ơn,',
   },
 
   thankYou: {
-    heading: 'Cảm ơn bạn',
+    heading: 'Lời cảm ơn chân thành',
     message:
-      'Hẹn gặp bạn tại cổng khởi hành. Cùng nâng ly và bay đến hạnh phúc!',
+      'Cô dâu, chú rể và hai gia đình hân hạnh được đón tiếp Quý khách trong ngày trọng đại.',
   },
 
   music: {
-    src: 'music/wedding.mp3',
-    title: 'Nhạc nền',
+    tracks: [
+      {
+        src: 'music/beautiful-in-white.mp3',
+        title: 'Beautiful In White',
+        artist: 'Shane Filan',
+      },
+      {
+        src: 'music/young-and-beautiful.mp3',
+        title: 'Young and Beautiful',
+        artist: 'Lana Del Rey',
+      },
+      {
+        src: 'music/souvenirs.mp3',
+        title: 'Souvenirs',
+        artist: 'van',
+      },
+    ],
+    initialVolume: 0.55,
   },
 }
 

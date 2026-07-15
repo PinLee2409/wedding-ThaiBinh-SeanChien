@@ -123,6 +123,7 @@ export interface Translation {
     venue: string
     photoLabel: string
     passengerFallback: string
+    scanQr: string
     /** Localised field VALUES (the config keeps only data, not copy). */
     fromValue: string
     toValue: string
@@ -140,6 +141,10 @@ export interface Translation {
     music: string
     musicOn: string
     musicOff: string
+    musicNowPlaying: string
+    musicVolume: string
+    musicMute: string
+    musicUnmute: string
     themes: string
     chooseTheme: string
     random: string
@@ -149,6 +154,7 @@ export interface Translation {
     viewPhoto: string
     zoomPhoto: string
     unzoomPhoto: string
+    openFullInvitation: string
   }
   /** Palette names by theme id. Empty entry ⇒ fall back to the Vietnamese
    *  label defined in `config/themes.ts`. */
@@ -160,18 +166,18 @@ export const translations: Record<Lang, Translation> = {
   vi: {
     langName: 'Tiếng Việt',
     gate: {
-      title: 'Chào mừng quý khách',
-      subtitle: 'Nhập tên để mở thiệp mời',
-      placeholder: 'Ví dụ: Anh Tuấn & Chị Lan',
+      title: 'Kính chào Quý khách',
+      subtitle: 'Vui lòng nhập tên để mở thiệp mời',
+      placeholder: 'Ví dụ: Gia đình bác Hoàng',
       submit: 'Mở thiệp mời',
-      skip: 'Xem thiệp không cần nhập tên',
+      skip: 'Tiếp tục xem thiệp',
     },
     hero: {
       kicker: 'Lưu ngày trọng đại',
       aria: 'Trang bìa thiệp cưới',
-      inviteLabel: 'Kính mời',
-      inviteFallback: 'Trân trọng kính mời',
-      inviteLine: 'Cùng chúng mình bay đến hạnh phúc.',
+      inviteLabel: 'Trân trọng kính mời',
+      inviteFallback: 'Trân trọng kính mời Quý khách',
+      inviteLine: 'Đến chung vui trong ngày trọng đại của cô dâu và chú rể.',
       scroll: 'Cuộn xuống',
     },
     countdown: {
@@ -182,9 +188,10 @@ export const translations: Record<Lang, Translation> = {
       departed: 'Chuyến bay hạnh phúc đã cất cánh ♥',
     },
     download: {
-      kicker: 'Thẻ mời riêng',
-      title: 'Thiệp mời của bạn',
-      subtitle: 'Lưu thẻ mời để check-in ngày trọng đại.',
+      kicker: 'Thiệp mời dành riêng',
+      title: 'Thiệp mời dành cho Quý khách',
+      subtitle:
+        'Quý khách vui lòng lưu thẻ mời để thuận tiện khi tham dự ngày trọng đại.',
       png: 'Tải PNG',
       pdf: 'Tải PDF',
       generating: 'Đang tạo tệp…',
@@ -193,7 +200,7 @@ export const translations: Record<Lang, Translation> = {
     },
     timeline: {
       kicker: 'Hành trình bay',
-      title: 'Hành trình của chúng mình',
+      title: 'Hành trình yêu thương',
       subtitle: 'Mỗi chặng bay, một dấu mốc yêu thương.',
       items: [
         { phase: 'Làm thủ tục', date: 'Mùa thu 2019', title: 'Lần đầu gặp gỡ', description: 'Hai người xa lạ chung một chuyến bay.' },
@@ -213,7 +220,7 @@ export const translations: Record<Lang, Translation> = {
     details: {
       kicker: 'Chi tiết chuyến bay',
       title: 'Thông tin chuyến bay',
-      subtitle: 'Hẹn gặp bạn đúng giờ tại cổng khởi hành.',
+      subtitle: 'Kính mong Quý khách có mặt đúng giờ tại cổng khởi hành.',
       departure: 'Ngày khởi hành',
       boardingAt: 'Đón khách lúc',
       venue: 'Địa điểm',
@@ -221,12 +228,12 @@ export const translations: Record<Lang, Translation> = {
       addCalendar: 'Thêm vào lịch',
     },
     love: {
-      kicker: 'Từ hai chúng mình',
-      title: 'Đôi lời từ chúng mình',
+      kicker: 'Lời tri ân',
+      title: 'Đôi lời từ cô dâu và chú rể',
       body: [
-        'Có một chuyến bay đưa hai chúng mình về bên nhau trọn đời. Cảm ơn bạn đã cùng đồng hành — sự hiện diện của bạn là món quà quý giá nhất.',
+        'Có một chuyến bay đã đưa cô dâu và chú rể về bên nhau trọn đời. Xin trân trọng cảm ơn Quý khách đã dành thời gian đến chung vui — sự hiện diện của Quý khách là niềm vinh hạnh và món quà quý giá đối với hai gia đình.',
       ],
-      signature: 'Với tất cả yêu thương,',
+      signature: 'Với tất cả yêu thương và lòng biết ơn,',
     },
     couple: {
       groomRole: 'Chú rể',
@@ -245,9 +252,10 @@ export const translations: Record<Lang, Translation> = {
       openTest: 'Mở thử liên kết',
     },
     thanks: {
-      tagline: 'Cảm ơn bạn đã đồng hành cùng chuyến bay',
-      heading: 'Cảm ơn bạn',
-      message: 'Hẹn gặp tại cổng khởi hành — cùng bay đến hạnh phúc!',
+      tagline: 'Trân trọng cảm ơn Quý khách',
+      heading: 'Lời cảm ơn chân thành',
+      message:
+        'Cô dâu, chú rể và hai gia đình hân hạnh được đón tiếp Quý khách trong ngày trọng đại.',
     },
     pass: {
       label: 'Thẻ lên máy bay',
@@ -260,22 +268,29 @@ export const translations: Record<Lang, Translation> = {
       date: 'Ngày',
       venue: 'Địa điểm',
       photoLabel: 'Ảnh cưới',
-      passengerFallback: 'Quý Khách',
+      passengerFallback: 'Quý khách',
+      scanQr: 'Quét để mở thiệp',
       fromValue: 'Ga Độc Thân',
       toValue: 'Bến Đỗ Hạnh Phúc',
     },
     calendar: {
-      summary: 'Đám cưới {bride} & {groom}',
-      description: 'Flight to Forever — Cùng lên chuyến bay hạnh phúc.',
+      summary: 'Lễ thành hôn của {bride} & {groom}',
+      description:
+        'Flight to Forever — Trân trọng kính mời Quý khách cùng chung vui trong ngày trọng đại.',
     },
     meta: {
       title: 'Thái Bình & Sean Chien · Thiệp cưới',
-      description: 'Thiệp cưới của Thái Bình và Sean Chien — chuyến bay đến trọn đời.',
+      description:
+        'Thiệp cưới của Thái Bình và Sean Chien — trân trọng kính mời Quý khách cùng chung vui trong ngày trọng đại.',
     },
     ui: {
       music: 'Nhạc nền',
       musicOn: 'Bật nhạc nền',
       musicOff: 'Tắt nhạc nền',
+      musicNowPlaying: 'Đang phát',
+      musicVolume: 'Âm lượng',
+      musicMute: 'Tắt tiếng',
+      musicUnmute: 'Bật tiếng',
       themes: 'Bộ màu',
       chooseTheme: 'Chọn bộ màu',
       random: 'Ngẫu nhiên',
@@ -285,6 +300,7 @@ export const translations: Record<Lang, Translation> = {
       viewPhoto: 'Xem ảnh',
       zoomPhoto: 'Phóng to ảnh',
       unzoomPhoto: 'Thu nhỏ ảnh',
+      openFullInvitation: 'Xem trọn thiệp mời',
     },
     // Vietnamese names live in config/themes.ts — empty map falls back there.
     themeNames: {},
@@ -295,17 +311,17 @@ export const translations: Record<Lang, Translation> = {
     langName: 'English',
     gate: {
       title: 'Welcome aboard',
-      subtitle: 'Enter your name to open the invitation',
+      subtitle: 'Please enter your name to open the invitation',
       placeholder: 'e.g. John & Jane',
       submit: 'Open the invitation',
-      skip: 'View without entering a name',
+      skip: 'Continue without entering a name',
     },
     hero: {
       kicker: 'Save the Date',
       aria: 'Wedding invitation cover',
-      inviteLabel: 'Dearest',
-      inviteFallback: 'You are warmly invited',
-      inviteLine: 'Fly with us to happiness.',
+      inviteLabel: 'Cordially invited',
+      inviteFallback: 'You are cordially invited',
+      inviteLine: 'Please join us in celebrating our wedding.',
       scroll: 'Scroll down',
     },
     countdown: {
@@ -318,7 +334,7 @@ export const translations: Record<Lang, Translation> = {
     download: {
       kicker: 'Your Boarding Pass',
       title: 'Your invitation card',
-      subtitle: 'Save your pass for check-in on our big day.',
+      subtitle: 'Please save your boarding pass for our wedding day.',
       png: 'Download PNG',
       pdf: 'Download PDF',
       generating: 'Generating…',
@@ -347,7 +363,7 @@ export const translations: Record<Lang, Translation> = {
     details: {
       kicker: 'Flight Details',
       title: 'Flight details',
-      subtitle: 'See you on time at the gate.',
+      subtitle: 'We look forward to welcoming you at the gate.',
       departure: 'Departure date',
       boardingAt: 'Boarding at',
       venue: 'Venue',
@@ -355,12 +371,12 @@ export const translations: Record<Lang, Translation> = {
       addCalendar: 'Add to calendar',
     },
     love: {
-      kicker: 'From the Couple',
-      title: 'A few words from us',
+      kicker: 'A Note from the Couple',
+      title: 'With heartfelt gratitude',
       body: [
-        'One flight brought the two of us together for life. Thank you for being here — your presence is the most precious gift.',
+        'Our journey has brought us together for a lifetime. We are deeply grateful for the honour of your presence as we celebrate this special day.',
       ],
-      signature: 'With all our love,',
+      signature: 'With love and gratitude,',
     },
     couple: {
       groomRole: 'Groom',
@@ -379,9 +395,10 @@ export const translations: Record<Lang, Translation> = {
       openTest: 'Open the link',
     },
     thanks: {
-      tagline: 'Thank You for Flying With Us',
-      heading: 'Thank you',
-      message: 'See you at the gate — let’s fly to happiness!',
+      tagline: 'With sincere appreciation',
+      heading: 'With heartfelt thanks',
+      message:
+        'We look forward to welcoming you as we begin this joyful journey together.',
     },
     pass: {
       label: 'Boarding Pass',
@@ -394,22 +411,29 @@ export const translations: Record<Lang, Translation> = {
       date: 'Date',
       venue: 'Venue',
       photoLabel: 'Wedding photo',
-      passengerFallback: 'Honored Guest',
+      passengerFallback: 'Honoured Guest',
+      scanQr: 'Scan to open invite',
       fromValue: 'Single Terminal',
       toValue: 'Happy Destination',
     },
     calendar: {
       summary: 'Wedding of {groom} & {bride}',
-      description: 'Flight to Forever — fly with us to happiness.',
+      description:
+        'Flight to Forever — please join us in celebrating this special day.',
     },
     meta: {
       title: 'Flight to Forever · Wedding Invitation',
-      description: 'An online wedding invitation — fly with us to happiness.',
+      description:
+        'Thái Bình and Sean Chien request the pleasure of your company as they celebrate their wedding.',
     },
     ui: {
       music: 'Music',
       musicOn: 'Play music',
       musicOff: 'Pause music',
+      musicNowPlaying: 'Now playing',
+      musicVolume: 'Volume',
+      musicMute: 'Mute',
+      musicUnmute: 'Unmute',
       themes: 'Palette',
       chooseTheme: 'Choose a palette',
       random: 'Random',
@@ -419,6 +443,7 @@ export const translations: Record<Lang, Translation> = {
       viewPhoto: 'View photo',
       zoomPhoto: 'Zoom photo',
       unzoomPhoto: 'Zoom out',
+      openFullInvitation: 'View full invitation',
     },
     themeNames: {
       'classic-navy': { label: 'Navy & Champagne', note: 'The classic wedding duo' },
@@ -463,17 +488,17 @@ export const translations: Record<Lang, Translation> = {
     langName: '繁體中文',
     gate: {
       title: '歡迎蒞臨',
-      subtitle: '輸入您的名字，開啟喜帖',
-      placeholder: '例：陳先生 & 林小姐',
+      subtitle: '敬請輸入您的姓名，以開啟喜帖',
+      placeholder: '例：陳先生與林女士',
       submit: '開啟喜帖',
-      skip: '直接瀏覽喜帖',
+      skip: '略過姓名，直接瀏覽喜帖',
     },
     hero: {
-      kicker: '婚禮預告',
+      kicker: '敬請惠存佳期',
       aria: '喜帖封面',
-      inviteLabel: '敬邀',
-      inviteFallback: '誠摯邀請您',
-      inviteLine: '與我們一同飛向幸福。',
+      inviteLabel: '誠摯敬邀',
+      inviteFallback: '誠摯敬邀您蒞臨',
+      inviteLine: '敬請您蒞臨，共同見證我們的幸福時刻。',
       scroll: '向下滑動',
     },
     countdown: {
@@ -486,7 +511,7 @@ export const translations: Record<Lang, Translation> = {
     download: {
       kicker: '您的登機證',
       title: '您的專屬喜帖',
-      subtitle: '下載登機證，於大喜之日辦理登機。',
+      subtitle: '敬請惠存登機證，以備婚禮當日使用。',
       png: '下載 PNG',
       pdf: '下載 PDF',
       generating: '正在產生檔案…',
@@ -515,7 +540,7 @@ export const translations: Record<Lang, Translation> = {
     details: {
       kicker: '搭乘資訊',
       title: '航班資訊',
-      subtitle: '期待您準時蒞臨登機門。',
+      subtitle: '敬候您於良辰蒞臨，共襄盛舉。',
       departure: '啟程日期',
       boardingAt: '登機時間',
       venue: '地點',
@@ -524,9 +549,11 @@ export const translations: Record<Lang, Translation> = {
     },
     love: {
       kicker: '新人的話',
-      title: '我們的心裡話',
-      body: ['有一班航機，讓我們相伴一生。謝謝您的蒞臨——這是最珍貴的禮物。'],
-      signature: '致上滿滿的愛，',
+      title: '致貴賓的一席話',
+      body: [
+        '一段旅程，讓我們相知相伴，攜手走向一生。承蒙您撥冗蒞臨，與我們共同見證這份喜悅；您的祝福與陪伴，是我們最珍貴的禮物。',
+      ],
+      signature: '謹致誠摯謝意，',
     },
     couple: {
       groomRole: '新郎',
@@ -545,9 +572,9 @@ export const translations: Record<Lang, Translation> = {
       openTest: '開啟連結測試',
     },
     thanks: {
-      tagline: '感謝您搭乘幸福航班',
-      heading: '感謝您',
-      message: '登機門見——一起飛向幸福！',
+      tagline: '誠摯感謝您的蒞臨',
+      heading: '衷心感謝',
+      message: '敬候您蒞臨，共同見證我們啟程幸福的新篇章。',
     },
     pass: {
       label: '登機證',
@@ -561,21 +588,28 @@ export const translations: Record<Lang, Translation> = {
       venue: '地點',
       photoLabel: '婚紗照',
       passengerFallback: '貴賓',
+      scanQr: '掃描開啟喜帖',
       fromValue: '單身',
       toValue: '永遠',
     },
     calendar: {
       summary: '{groom} & {bride} 婚禮',
-      description: 'Flight to Forever——與我們一同飛向幸福。',
+      description:
+        'Flight to Forever——誠摯敬邀您蒞臨，共同見證我們的幸福時刻。',
     },
     meta: {
       title: 'Flight to Forever · 婚禮喜帖',
-      description: '線上喜帖——與我們一同飛向幸福。',
+      description:
+        'Thái Bình 與 Sean Chien 誠摯敬邀您蒞臨婚禮，共同見證幸福時刻。',
     },
     ui: {
       music: '背景音樂',
       musicOn: '播放音樂',
       musicOff: '暫停音樂',
+      musicNowPlaying: '正在播放',
+      musicVolume: '音量',
+      musicMute: '靜音',
+      musicUnmute: '取消靜音',
       themes: '色彩主題',
       chooseTheme: '選擇色彩主題',
       random: '隨機',
@@ -585,6 +619,7 @@ export const translations: Record<Lang, Translation> = {
       viewPhoto: '查看照片',
       zoomPhoto: '放大照片',
       unzoomPhoto: '縮小照片',
+      openFullInvitation: '查看完整喜帖',
     },
     themeNames: {
       'classic-navy': { label: '海軍藍與香檳', note: '經典婚禮配色' },
@@ -708,6 +743,17 @@ export function getSavedLang(
   defaultLanguage: Lang,
 ): Lang {
   if (typeof window === 'undefined') return defaultLanguage
+
+  // A QR link must reproduce the language in which that invitation was made,
+  // even on a phone that has never opened the site before.
+  const requested = new URLSearchParams(window.location.search).get('lang')
+  if (
+    (requested === 'vi' || requested === 'en' || requested === 'tw') &&
+    enabledLanguages.includes(requested)
+  ) {
+    return requested
+  }
+
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (

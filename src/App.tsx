@@ -14,6 +14,7 @@ import { WeddingDetails } from './components/sections/WeddingDetails'
 import { LoveMessage } from './components/sections/LoveMessage'
 import { GuestLinkGenerator } from './components/sections/GuestLinkGenerator'
 import { FinalThankYou } from './components/sections/FinalThankYou'
+import { ScannedInvitationView } from './components/sections/ScannedInvitationView'
 import { RouteDivider } from './components/decorations/RouteDivider'
 import { FloatingDecor } from './components/decorations/FloatingDecor'
 import { FallingPetals } from './components/decorations/FallingPetals'
@@ -22,18 +23,37 @@ import { BackToTop } from './components/ui/BackToTop'
 import { ThemePicker } from './components/ui/ThemePicker'
 import { LanguageSwitcher } from './components/ui/LanguageSwitcher'
 import { ScrollProgress } from './components/ui/ScrollProgress'
+import { clearCardViewInUrl, isCardViewFromUrl } from './lib/guest'
 
 function App() {
   const reduce = useReducedMotion()
   const { guestName, setGuestName } = useGuestName()
   const { themeId, setTheme, themes } = useTheme()
-  const { isPlaying, toggle, enabled: musicEnabled } = useAudio(
-    weddingConfig.music.src,
-  )
+  const {
+    isPlaying,
+    isMuted,
+    volume,
+    currentTrack,
+    play,
+    toggle,
+    toggleMute,
+    setVolume,
+    enabled: musicEnabled,
+  } = useAudio(weddingConfig.music.tracks, weddingConfig.music.initialVolume)
 
+  const [cardView, setCardView] = useState(() => isCardViewFromUrl())
   // Show the name gate on every page load / reload.
-  const [gateDismissed, setGateDismissed] = useState(false)
+  // A scanned QR is the exception: its dedicated view opens the card directly.
+  const [gateDismissed, setGateDismissed] = useState(cardView)
   const gateOpen = !gateDismissed
+
+  const startMusicAfterGate = () => {
+    // A direct attempt covers normal browsers. The short follow-up covers
+    // embedded webviews that register the gate click only after its handler
+    // finishes; calling play() on an already-playing element is harmless.
+    void play()
+    window.setTimeout(() => void play(), 160)
+  }
 
   // Always open at the top. scrollRestoration is disabled in main.tsx before
   // first paint; here we force the position instantly ("instant" bypasses the
@@ -46,6 +66,22 @@ function App() {
     window.addEventListener('pageshow', toTop)
     return () => window.removeEventListener('pageshow', toTop)
   }, [])
+
+  if (cardView) {
+    return (
+      <ScannedInvitationView
+        config={weddingConfig}
+        guestName={guestName}
+        onOpenFullInvitation={() => {
+          clearCardViewInUrl()
+          startMusicAfterGate()
+          setGateDismissed(true)
+          setCardView(false)
+          window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 0)
+        }}
+      />
+    )
+  }
 
   return (
     // IMPORTANT: no `filter`/`transform` on this root — any filter value (even
@@ -66,6 +102,9 @@ function App() {
       <GuestNameGate
         open={gateOpen}
         onSubmit={(name) => {
+          // The gate click is the browser-approved gesture that starts the
+          // playlist with sound. Playback then continues across all 3 songs.
+          startMusicAfterGate()
           setGuestName(name)
           setGateDismissed(true)
           // A soft burst of hearts welcomes the guest aboard.
@@ -80,7 +119,10 @@ function App() {
             zIndex: 60,
           })
         }}
-        onSkip={() => setGateDismissed(true)}
+        onSkip={() => {
+          startMusicAfterGate()
+          setGateDismissed(true)
+        }}
       />
 
       {/* The cinematic blur intro lives on <main> (no fixed descendants). */}
@@ -96,6 +138,7 @@ function App() {
           isMusicPlaying={isPlaying}
           onToggleMusic={toggle}
           musicEnabled={musicEnabled}
+          isRevealed={gateDismissed}
         />
 
         <DownloadInvitation config={weddingConfig} guestName={guestName} />
@@ -116,11 +159,22 @@ function App() {
       </motion.main>
 
       {/* Floating controls */}
-      <div className="fixed bottom-5 right-5 z-40 flex flex-col items-center gap-3">
+      <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
         <BackToTop />
         <LanguageSwitcher />
         <ThemePicker themes={themes} activeId={themeId} onSelect={setTheme} />
-        {musicEnabled && <MusicToggle isPlaying={isPlaying} onToggle={toggle} />}
+        {musicEnabled && (
+          <MusicToggle
+            isPlaying={isPlaying}
+            onToggle={toggle}
+            muted={isMuted}
+            volume={volume}
+            trackTitle={currentTrack?.title}
+            trackArtist={currentTrack?.artist}
+            onToggleMute={toggleMute}
+            onVolumeChange={setVolume}
+          />
+        )}
       </div>
     </motion.div>
   )
