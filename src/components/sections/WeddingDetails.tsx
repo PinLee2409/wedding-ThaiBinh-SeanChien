@@ -11,7 +11,7 @@ import { SectionRomance } from '../decorations/SectionRomance'
 /**
  * Flight details — one centred glass card. Deliberately light so the page
  * flows ivory → sky and saves the single dark "night" moment for the finale.
- * No street address or embedded map: the venue name + a Maps link is enough.
+ * No embedded map — the venue name, its address and a Maps link are enough.
  */
 export function WeddingDetails({ config }: { config: WeddingConfig }) {
   const { date, venue } = config
@@ -78,6 +78,11 @@ export function WeddingDetails({ config }: { config: WeddingConfig }) {
             <p className="mt-1 font-display text-2xl text-navy">{venue.name}</p>
             {venue.hall && (
               <p className="mt-0.5 text-sm text-navy-500">{venue.hall}</p>
+            )}
+            {venue.address && (
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-navy-500">
+                {venue.address}
+              </p>
             )}
           </div>
 

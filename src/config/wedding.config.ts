@@ -170,7 +170,7 @@ export const weddingConfig: WeddingConfig = {
     tagline: 'Flight to Forever',
     kicker: 'Save the Date',
     airline: 'Forever Airlines',
-    flightCode: '1220',
+    flightCode: '1205',
   },
 
   couple: {
@@ -190,21 +190,21 @@ export const weddingConfig: WeddingConfig = {
   },
 
   date: {
-    iso: '2026-12-20T16:00:00+07:00',
-    displayDate: '20 · 12 · 2026',
-    weekday: 'Chủ Nhật',
+    iso: '2026-12-05T16:00:00+07:00',
+    displayDate: '05 · 12 · 2026',
+    weekday: 'Thứ Bảy',
     time: '16:00',
     durationHours: 4,
   },
 
   venue: {
-    name: 'Trung tâm Hội nghị & Tiệc cưới Diamond Palace',
-    hall: 'Sảnh Sapphire · Tầng 3',
-    address: '123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh',
-    // Replace with your own Google Maps "Embed a map" iframe src.
+    name: 'TTC Vân Phong Bay Resort',
+    // No hall given yet — the template's "Sảnh Sapphire · Tầng 3" was invented.
+    address: 'Dốc Lết, Phường Đông Ninh Hòa, Tỉnh Khánh Hòa',
     mapEmbedUrl:
-      'https://www.google.com/maps?q=Ho+Chi+Minh+City+Opera+House&output=embed',
-    mapLink: 'https://maps.google.com/?q=Ho+Chi+Minh+City+Opera+House',
+      'https://www.google.com/maps?q=TTC%20V%C3%A2n%20Phong%20Bay%20Resort%2C%20D%E1%BB%91c%20L%E1%BA%BFt%2C%20Ph%C6%B0%E1%BB%9Dng%20%C4%90%C3%B4ng%20Ninh%20H%C3%B2a%2C%20T%E1%BB%89nh%20Kh%C3%A1nh%20H%C3%B2a&output=embed',
+    mapLink:
+      'https://www.google.com/maps/search/?api=1&query=TTC%20V%C3%A2n%20Phong%20Bay%20Resort%2C%20D%E1%BB%91c%20L%E1%BA%BFt%2C%20Ph%C6%B0%E1%BB%9Dng%20%C4%90%C3%B4ng%20Ninh%20H%C3%B2a%2C%20T%E1%BB%89nh%20Kh%C3%A1nh%20H%C3%B2a',
   },
 
   hero: {
@@ -245,7 +245,7 @@ export const weddingConfig: WeddingConfig = {
     {
       phase: 'Landing',
       icon: 'plane-landing',
-      date: '20 · 12 · 2026',
+      date: '05 · 12 · 2026',
       title: 'Ngày hạ cánh',
       description: 'Bến đỗ cuối cùng, và cũng là nơi bắt đầu.',
     },

@@ -235,7 +235,7 @@ export const translations: Record<Lang, Translation> = {
         { phase: 'Làm thủ tục', date: '', title: 'Chuẩn bị hành trang', description: 'Mọi chuyến bay đều bắt đầu bằng một lời hẹn.' },
         { phase: 'Cất cánh', date: '', title: 'Cùng cất cánh', description: 'Hai hành khách chọn chung một đường bay.' },
         { phase: 'Bay ổn định', date: '', title: 'Đường bay chung', description: 'Qua nắng, qua mưa, qua những điều rất đời thường.' },
-        { phase: 'Hạ cánh', date: '20 · 12 · 2026', title: 'Ngày hạ cánh', description: 'Bến đỗ cuối cùng, và cũng là nơi bắt đầu.' },
+        { phase: 'Hạ cánh', date: '05 · 12 · 2026', title: 'Ngày hạ cánh', description: 'Bến đỗ cuối cùng, và cũng là nơi bắt đầu.' },
       ],
     },
     gallery: {
@@ -419,7 +419,7 @@ export const translations: Record<Lang, Translation> = {
         { phase: 'Check-in', date: '', title: 'Packing for the journey', description: 'Every flight begins with a promise.' },
         { phase: 'Take-off', date: '', title: 'Cleared for take-off', description: 'Two passengers choosing the same route.' },
         { phase: 'Cruising Altitude', date: '', title: 'The shared route', description: 'Through sunshine, through rain, through the ordinary days.' },
-        { phase: 'Landing', date: '20 · 12 · 2026', title: 'Landing day', description: 'Our final stop, and where everything begins.' },
+        { phase: 'Landing', date: '05 · 12 · 2026', title: 'Landing day', description: 'Our final stop, and where everything begins.' },
       ],
     },
     gallery: {
@@ -636,7 +636,7 @@ export const translations: Record<Lang, Translation> = {
         { phase: '報到', date: '', title: '整理行囊', description: '每一趟旅程，都始於一個約定。' },
         { phase: '起飛', date: '', title: '一同起飛', description: '兩位旅客，選擇了同一條航線。' },
         { phase: '巡航', date: '', title: '共同的航線', description: '晴天、雨天，以及每一個平凡的日子。' },
-        { phase: '降落', date: '2026.12.20', title: '降落之日', description: '最後的停機坪，也是一切的起點。' },
+        { phase: '降落', date: '2026.12.05', title: '降落之日', description: '最後的停機坪，也是一切的起點。' },
       ],
     },
     gallery: {

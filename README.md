@@ -75,17 +75,16 @@ couple: {
 },
 
 date: {
-  iso: '2026-12-20T16:00:00+07:00', // powers the countdown & calendar file
-  displayDate: '20 · 12 · 2026',
-  weekday: 'Chủ Nhật',
+  iso: '2026-12-05T16:00:00+07:00', // powers the countdown & calendar file
+  displayDate: '05 · 12 · 2026',
+  weekday: 'Thứ Bảy',
   time: '16:00',
   durationHours: 4,
 },
 
 venue: {
-  name: 'Trung tâm Hội nghị & Tiệc cưới Diamond Palace',
-  hall: 'Sảnh Sapphire · Tầng 3',
-  address: '123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh',
+  name: 'TTC Vân Phong Bay Resort',
+  address: 'Dốc Lết, Phường Đông Ninh Hòa, Tỉnh Khánh Hòa',
   mapEmbedUrl: '…/maps?q=…&output=embed', // Google Maps → Share → Embed a map
   mapLink: 'https://maps.google.com/?q=…',
 },
