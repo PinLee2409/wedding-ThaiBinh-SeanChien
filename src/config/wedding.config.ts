@@ -212,42 +212,42 @@ export const weddingConfig: WeddingConfig = {
     backgroundVideo: '',
   },
 
+  // Deliberately free of dates and events we were never told. Only the landing
+  // leg carries a real date — the wedding day. If the couple want their actual
+  // milestones here, fill in `date`/`title`/`description` per leg (and the
+  // matching entries in i18n `timeline.items`); a leg with an empty `date`
+  // simply renders without one.
+  // Photographs come from the gallery set via FlightTimeline's LEG_PHOTOS —
+  // the old `images/timeline-*.jpg` paths were never supplied and rendered as
+  // placeholders, which is why this section had been dropped from the page.
   timeline: [
     {
       phase: 'Check-in',
       icon: 'ticket',
-      date: 'Mùa thu 2019',
-      title: 'Lần đầu gặp gỡ',
-      description:
-        'Hai hành khách xa lạ tình cờ chung một chuyến bay. Một ánh nhìn, và hành trình bắt đầu.',
-      image: 'images/timeline-1.jpg',
+      date: '',
+      title: 'Chuẩn bị hành trang',
+      description: 'Mọi chuyến bay đều bắt đầu bằng một lời hẹn.',
     },
     {
       phase: 'Take-off',
       icon: 'plane-takeoff',
-      date: 'Xuân 2021',
-      title: 'Chính thức cất cánh',
-      description:
-        'Thái Bình và Sean Chien về chung một đội bay, cùng nhau viết tiếp hành trình yêu thương.',
-      image: 'images/timeline-2.jpg',
+      date: '',
+      title: 'Cùng cất cánh',
+      description: 'Hai hành khách chọn chung một đường bay.',
     },
     {
       phase: 'Cruising Altitude',
       icon: 'cloud',
-      date: '2021 — 2026',
-      title: 'Những kỷ niệm đẹp',
-      description:
-        'Bay qua bao vùng trời, cùng đón bình minh và hoàng hôn ở khắp mọi nơi.',
-      image: 'images/timeline-3.jpg',
+      date: '',
+      title: 'Đường bay chung',
+      description: 'Qua nắng, qua mưa, qua những điều rất đời thường.',
     },
     {
       phase: 'Landing',
       icon: 'plane-landing',
       date: '20 · 12 · 2026',
       title: 'Ngày hạ cánh',
-      description:
-        'Chuyến bay hạnh phúc đáp xuống bến đỗ cuối cùng — mãi mãi bên nhau.',
-      image: 'images/timeline-4.jpg',
+      description: 'Bến đỗ cuối cùng, và cũng là nơi bắt đầu.',
     },
   ],
 
