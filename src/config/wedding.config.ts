@@ -226,28 +226,32 @@ export const weddingConfig: WeddingConfig = {
       icon: 'ticket',
       date: '',
       title: 'Chuẩn bị hành trang',
-      description: 'Mọi chuyến bay đều bắt đầu bằng một lời hẹn.',
+      description:
+        'Mỗi người đều mang theo những ước mơ, những trải nghiệm và cả những điều chưa trọn vẹn. Nhưng quan trọng hơn cả là mong muốn được đồng hành cùng nhau.',
     },
     {
       phase: 'Take-off',
       icon: 'plane-takeoff',
       date: '',
       title: 'Cùng cất cánh',
-      description: 'Hai hành khách chọn chung một đường bay.',
+      description:
+        'Không phải vì mọi thứ đều hoàn hảo, mà vì chúng mình tin rằng, nắm tay nhau sẽ giúp mọi hành trình trở nên ý nghĩa hơn.',
     },
     {
       phase: 'Cruising Altitude',
       icon: 'cloud',
       date: '',
       title: 'Đường bay chung',
-      description: 'Qua nắng, qua mưa, qua những điều rất đời thường.',
+      description:
+        'Phía trước sẽ có những ngày nắng đẹp, cũng sẽ có những lúc nhiều thử thách. Nhưng từ hôm nay, mọi niềm vui và khó khăn sẽ không còn phải đi qua một mình.',
     },
     {
       phase: 'Landing',
       icon: 'plane-landing',
       date: '05 · 12 · 2026',
       title: 'Ngày hạ cánh',
-      description: 'Bến đỗ cuối cùng, và cũng là nơi bắt đầu.',
+      description:
+        'Không phải là điểm kết thúc của một chuyến bay, mà là điểm khởi đầu của một mái ấm. Từ hôm nay, chúng mình chính thức trở thành gia đình.',
     },
   ],
 
@@ -284,7 +288,7 @@ export const weddingConfig: WeddingConfig = {
     heading: 'Đôi lời từ cô dâu và chú rể',
     body: [
       'Có những chuyến bay đưa con người đến những vùng đất mới, và có một chuyến bay đưa hai trái tim về bên nhau trọn đời.',
-      'Xin trân trọng cảm ơn Quý khách đã dành thời gian đến chung vui. Sự hiện diện của Quý khách là niềm vinh hạnh và món quà quý giá đối với hai gia đình.',
+      'Xin trân trọng cảm ơn Quý khách đã dành thời gian đến chung vui. Sự hiện diện của Quý khách là niềm vinh hạnh và món quà quý giá đối với gia đình hai bên chúng tôi.',
     ],
     signature: 'Với tất cả yêu thương và lòng biết ơn,',
   },
@@ -292,7 +296,7 @@ export const weddingConfig: WeddingConfig = {
   thankYou: {
     heading: 'Lời cảm ơn chân thành',
     message:
-      'Cô dâu, chú rể và hai gia đình hân hạnh được đón tiếp Quý khách trong ngày trọng đại.',
+      'Cô dâu, chú rể và hai bên gia đình hân hạnh được đón tiếp Quý khách trong ngày trọng đại.',
   },
 
   guestbook: {
