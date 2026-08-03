@@ -309,15 +309,16 @@ export const weddingConfig: WeddingConfig = {
 
   music: {
     tracks: [
+      // Instrumental throughout, so nothing sings over the invitation.
       {
         src: 'music/beautiful-in-white.mp3',
         title: 'Beautiful In White',
-        artist: 'Shane Filan',
+        artist: 'Piano & strings',
       },
       {
         src: 'music/young-and-beautiful.mp3',
         title: 'Young and Beautiful',
-        artist: 'Lana Del Rey',
+        artist: 'Lana Del Rey · Instrumental',
       },
       {
         src: 'music/souvenirs.mp3',
