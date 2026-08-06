@@ -190,10 +190,10 @@ export const weddingConfig: WeddingConfig = {
   },
 
   date: {
-    iso: '2026-12-05T16:30:00+07:00',
+    iso: '2026-12-05T16:00:00+07:00',
     displayDate: '05 · 12 · 2026',
     weekday: 'Thứ Bảy',
-    time: '16:30',
+    time: '16:00',
     durationHours: 4,
   },
 
